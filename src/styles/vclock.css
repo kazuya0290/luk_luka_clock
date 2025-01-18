@@ -4,8 +4,43 @@ body {
     align-items: center;
     height: 110vh;
     margin: 0;
+    padding: 0;
     overflow: hidden;
     position: relative;
+}
+
+.block-label1 {
+    display:block;
+    margin-top:-138px;
+    margin-left:-240px;
+    font-weight: bold;
+}
+
+.block-label2 {
+    display: block;
+    margin-top: 100px;
+    margin-left: -270px;
+    font-weight: bold;
+}
+
+.block-label3 {
+    display: block;
+    margin-top: 170px;
+    margin-left: -290px;
+    font-weight: bold;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .bg-default {
@@ -158,12 +193,21 @@ body {
 
 .controls {
     margin-left:500px;
+    display: flex;
+        flex-direction: column;
+        gap: 16px;
+        /* 各項目間の間隔を設定 */
+        max-width: 300px;
+        /* 必要なら横幅を制限 */
+        margin: 0 auto;
+        /* 中央揃え */
 }
 
 .clock {
     position: relative;
     width: 500px;
     height: 500px;
+    margin-top:10px;
     background-image: url('/sameno_uta.jpg');
     background-size: cover;
     background-position: center;
@@ -184,6 +228,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.digital-clock {
+    color: gray;
+    font-family: 'Roboto Mono', monospace;
+    margin-top:-200px;
 }
 
 .number {
@@ -262,38 +312,86 @@ body {
     left: 20%;
 }
 
-.hour-hand,
+.hour-hand {
+    position: absolute;
+    height: 20px;
+    width: 4px;
+    transform-origin: bottom;
+}
 .minute-hand,
 .second-hand {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-origin: 50% 100%;
-    transform: translate(-50%, -100%);
-}
-
-.hour-hand {
-    height: 30px;
-    width: 5px;
-    background-color: #000000;
-
-    transform: rotate(90deg);
-}
-
-.minute-hand {
-    height: 30px;
-    width: 3px;
-    background-color: #000000;
-
-}
-
-.second-hand {
-    height: 30px;
+    height: 20px;
     width: 2px;
-    background-color: red;
-
+    transform-origin: bottom;
 }
 
+.hand-line1 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    transform-origin: bottom;
+}
+
+.hand-line2 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #fc0000;
+    transform-origin: bottom;
+}
+
+.hand-icon1 {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    width: 24px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hand-icon2 {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    width: 24px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hand-icon3 {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    width: 24px;
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hour-hand .hand-line {
+    width: 4px;
+    left: -1px;
+}
+
+.minute-hand .hand-line {
+    width: 3px;
+    left: -0.5px;
+}
+
+.second-hand .hand-line {
+    width: 2px;
+    left: 0;
+}
 
 .hour-tip,
 .minute-tip,
@@ -307,15 +405,20 @@ body {
 
 }
 
-.hour-hand svg,
-.minute-hand svg,
-.second-hand svg {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 30px;
-    height: 30px;
+/* アイコンサイズの個別調整 */
+.hour-hand .hand-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.minute-hand .hand-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.second-hand .hand-icon svg {
+    width: 16px;
+    height: 16px;
 }
 
 select {
@@ -357,6 +460,18 @@ select {
     z-index: 100;
 }
 
+.control-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.block-label {
+    font-weight: bold;
+    margin-left:-310px;
+    margin-bottom: 60px;
+    /* ラベルとセレクトボックスの間隔 */
+}
+
 /* 個別のセレクトボックスのスタイル */
 .block1 {
     position: fixed;
@@ -369,6 +484,7 @@ select {
     border: 2px solid #000;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: -11px;
 }
 
 .block2 {
@@ -382,6 +498,7 @@ select {
     border: 2px solid #000;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 3px;
 }
 
 .block3 {
@@ -395,4 +512,5 @@ select {
     border: 2px solid #000;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 17px;
 }

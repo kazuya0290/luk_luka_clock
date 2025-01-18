@@ -3,7 +3,6 @@ import '../styles/vclock.css';
 import { useCallback } from 'react';
 import Icon from '@mdi/react';
 import { mdiShark, mdiTortoise, mdiDolphin } from '@mdi/js';
-import Image from 'next/image';
 
 // カスタムSVGコンポーネントの定義（変更なし）
 const DolphinIcon = () => (
@@ -29,7 +28,8 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   const [currentBackground, setCurrentBackground] = useState('bg-default');
   const [currentBubbleGradation, setBubbleGradation] = useState('default');
   const [bubblePositions, setBubblePositions] = useState<Array<{ left: number, bottom: number, delay: number }>>([]);
-
+  
+  
   // マウント状態の管理
   useEffect(() => {
     setMounted(true);
@@ -113,15 +113,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
       ))}
 
       <div className="clock flex flex-col items-center justify-center p-8">
-        <div className="absolute inset-0 rounded-full overflow-hidden">
-          <Image
-            src="/sameno_uta.jpg"
-            alt="Clock Background"
-            layout="fill"
-            objectFit="cover"
-            priority
-          />
-        </div>
+
         <div className="digital-clock text-4xl mb-8">
           {`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}
         </div>
@@ -142,44 +134,60 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
 
           {/* Clock hands */}
           <div
-            className="hour-hand"
+            className="hour-hand absolute left-1/2 bottom-1/2 origin-bottom"
             style={{
-              transform: `rotate(${hourDegrees}deg)`
+              transform: `translate(-50%, 0) rotate(${hourDegrees}deg)`
             }}
           >
-            <SharkIcon />
+            <div className="hand-line1" style={{ transform: 'scaleY(2.3)' }} />
+            <div className="hand-icon1">
+              <SharkIcon />
+            </div>
           </div>
           <div
-            className="minute-hand"
+            className="minute-hand absolute left-1/2 bottom-1/2 origin-bottom"
             style={{
-              transform: `rotate(${minuteDegrees}deg)`
+              transform: `translate(-50%, 0) rotate(${minuteDegrees}deg)`
             }}
           >
-            <TortoiseIcon />
+            <div className="hand-line1" style={{ transform: 'scaleY(4.0)' }} />
+            <div className="hand-icon2">
+              <TortoiseIcon />
+            </div>
           </div>
           <div
-            className="second-hand"
+            className="second-hand absolute left-1/2 bottom-1/2 origin-bottom"
             style={{
-              transform: `rotate(${secondDegrees}deg)`
+              transform: `translate(-50%, 0) rotate(${secondDegrees}deg)`
             }}
           >
-            <DolphinIcon />
+            <div className="hand-line2" style={{ transform: 'scaleY(5.3)' }} />
+            <div className="hand-icon3">
+              <DolphinIcon />
+            </div>
           </div>
         </div>
 
         <div className="controls">
-          <select
-            value={timezone}
-            onChange={(e) => setTimezone(e.target.value)}
-            className="block1"
-          >
+          <div className="control-item">
+            <label htmlFor="timezone-select" className="block-label">タイムゾーン</label>
+            <select
+              id="timezone-select"
+              value={timezone}
+              onChange={(e) => setTimezone(e.target.value)}
+              className="block1"
+            >
             <option value="Asia/Tokyo">日本 (アジア/東京)</option>
+            <option value="Asia/Taipei">台湾 (アジア/台北)</option>
             <option value="America/New_York">ニューヨーク (アメリカ/ニューヨーク)</option>
             <option value="Europe/London">ロンドン (ヨーロッパ/ロンドン)</option>
             <option value="Europe/Paris">パリ (ヨーロッパ/パリ)</option>
             <option value="America/Los_Angeles">ロサンゼルス (アメリカ/ロサンゼルス)</option>
           </select>
-
+          </div>
+          
+          <div className="control-item">
+            <label htmlFor="background-select" className="block-label">背景</label>
           <select
             value={currentBackground}
             onChange={(e) => setCurrentBackground(e.target.value)}
@@ -191,7 +199,10 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
             <option value="bg-deep-sea">深海</option>
             <option value="bg-sunset-beach">夕焼け</option>
           </select>
+          </div>
 
+          <div className="control-item">
+            <label htmlFor="bubble-select" className="block-label">泡の種類</label>
           <select
             value={currentBubbleGradation}
             onChange={(e) => setBubbleGradation(e.target.value)}
@@ -203,7 +214,8 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
             <option value="coral-reef">珊瑚礁</option>
             <option value="deep-sea">深海</option>
             <option value="tropical">熱帯</option>
-          </select>
+            </select>
+            </div>
         </div>
       </div>
     </div>
