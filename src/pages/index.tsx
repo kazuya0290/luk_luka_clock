@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/vclock.css';
 import { useCallback } from 'react';
 import Icon from '@mdi/react';
 import { mdiShark, mdiTortoise, mdiDolphin } from '@mdi/js';
