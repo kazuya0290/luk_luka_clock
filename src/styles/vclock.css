@@ -9,27 +9,6 @@ body {
     position: relative;
 }
 
-.block-label1 {
-    display:block;
-    margin-top:-138px;
-    margin-left:-240px;
-    font-weight: bold;
-}
-
-.block-label2 {
-    display: block;
-    margin-top: 100px;
-    margin-left: -270px;
-    font-weight: bold;
-}
-
-.block-label3 {
-    display: block;
-    margin-top: 170px;
-    margin-left: -290px;
-    font-weight: bold;
-}
-
 .min-h-screen {
     min-height: 100vh;
     width: 100vw;
@@ -465,17 +444,41 @@ select {
     flex-direction: column;
 }
 
-.block-label {
+/* ラベルの共通設定 */
+.block-label1,
+.block-label2,
+.block-label3 {
     font-weight: bold;
-    margin-left:-310px;
-    margin-bottom: 60px;
-    /* ラベルとセレクトボックスの間隔 */
+    margin-bottom: 80px;
+    display: block;
+    /* ラベルをブロック要素にして縦に並べる */
+}
+
+/* 1つ目のラベル */
+.block-label1 {
+    margin-top: 20px;
+    margin-left: -300px;
+    /* セレクトボックスの上に余白を追加 */
+}
+
+/* 2つ目のラベル */
+.block-label2 {
+    margin-top: 30px;
+    margin-left: -280px;
+    /* セレクトボックスの上に余白を追加 */
+}
+
+/* 3つ目のラベル */
+.block-label3 {
+    margin-top: 40px;
+    margin-left: -290px;
+    /* セレクトボックスの上に余白を追加 */
 }
 
 /* 個別のセレクトボックスのスタイル */
 .block1 {
     position: fixed;
-    right: 40px;
+    right: 200px;
     top: 30%;
     width: 200px;
     padding: 10px;
@@ -489,8 +492,8 @@ select {
 
 .block2 {
     position: fixed;
-    right: 40px;
-    top: 45%;
+    right: 200px;
+    top: 55%;
     width: 200px;
     padding: 10px;
     font-size: 16px;
@@ -503,8 +506,8 @@ select {
 
 .block3 {
     position: fixed;
-    right: 40px;
-    top: 60%;
+    right: 200px;
+    top: 83%;
     width: 200px;
     padding: 10px;
     font-size: 16px;
