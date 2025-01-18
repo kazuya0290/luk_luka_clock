@@ -1,114 +1,213 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import React, { useState, useEffect } from 'react';
+import '../styles/vclock.css';
+import { useCallback } from 'react';
+import Icon from '@mdi/react';
+import { mdiShark, mdiTortoise, mdiDolphin } from '@mdi/js';
+import Image from 'next/image';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// カスタムSVGコンポーネントの定義（変更なし）
+const DolphinIcon = () => (
+  <Icon path={mdiDolphin} size={1} />
+);
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const TortoiseIcon = () => (
+  <Icon path={mdiTortoise} size={1} />
+);
 
-export default function Home() {
+const SharkIcon = () => (
+  <Icon path={mdiShark} size={1} />
+);
+
+interface ClockProps {
+  initialTimezone?: string;
+}
+
+const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
+  const [mounted, setMounted] = useState(false);
+  const [time, setTime] = useState<Date | null>(null);
+  const [timezone, setTimezone] = useState(initialTimezone);
+  const [currentBackground, setCurrentBackground] = useState('bg-default');
+  const [currentBubbleGradation, setBubbleGradation] = useState('default');
+  const [bubblePositions, setBubblePositions] = useState<Array<{ left: number, bottom: number, delay: number }>>([]);
+
+  // マウント状態の管理
+  useEffect(() => {
+    setMounted(true);
+    // 初期バブル位置の設定
+    const initialBubbles = Array.from({ length: 100 }, () => ({
+      left: Math.random() * 100,
+      bottom: Math.random() * 100,
+      delay: Math.random() * 5
+    }));
+    setBubblePositions(initialBubbles);
+  }, []);
+
+  // Time update effect
+  useEffect(() => {
+    if (!mounted) return;
+
+    setTime(new Date());
+    const timer = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [mounted]);
+
+  const createBubbles = useCallback(() => {
+    const newBubbles = Array.from({ length: 100 }, () => ({
+      left: Math.random() * 100,
+      bottom: Math.random() * 100,
+      delay: Math.random() * 5
+    }));
+    setBubblePositions(newBubbles);
+  }, []);
+
+  // Bubble creation effect
+  useEffect(() => {
+    if (!mounted) return;
+    if (currentBubbleGradation !== 'none') {
+      createBubbles();
+    }
+  }, [mounted, currentBubbleGradation, createBubbles]);
+
+  const getTimeInTimezone = useCallback(() => {
+    if (!time) return null;
+    const options = { timeZone: timezone };
+    return new Date(time.toLocaleString('en-US', options));
+  }, [time, timezone]);
+
+  // クライアントサイドレンダリングのみを行う
+  if (!mounted || !time) {
+    return null; // 初期レンダリング時は何も表示しない
+  }
+
+  const currentTime = getTimeInTimezone();
+  if (!currentTime) return null;
+
+  const hours = currentTime.getHours();
+  const minutes = currentTime.getMinutes();
+  const seconds = currentTime.getSeconds();
+
+  const secondDegrees = ((seconds / 60) * 360);
+  const minuteDegrees = ((minutes / 60) * 360) + ((seconds / 60) * 6);
+  const hourDegrees = ((hours % 12) / 12) * 360 + ((minutes / 60) * 30);
+
   return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div className={`min-h-screen ${currentBackground} bubble-gradation-${currentBubbleGradation}`}>
+      
+      <div className="water-ripple"></div>
+      <div className="water-distortion"></div>
+      
+      {/* 泡のレンダリング */}
+      {currentBubbleGradation !== 'none' && bubblePositions.map((bubble, index) => (
+        <div
+          key={index}
+          className="bubble"
+          style={{
+            left: `${bubble.left}%`,
+            bottom: `${bubble.bottom}%`,
+            animationDelay: `${bubble.delay}s`
+          }}
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/pages/index.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+      ))}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <div className="clock flex flex-col items-center justify-center p-8">
+        <div className="absolute inset-0 rounded-full overflow-hidden">
+          <Image
+            src="/sameno_uta.jpg"
+            alt="Clock Background"
+            layout="fill"
+            objectFit="cover"
+            priority
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="digital-clock text-4xl mb-8">
+          {`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}
+        </div>
+
+        <div className="clock-face relative w-64 h-64 border-4 border-gray-800 rounded-full bg-white">
+          {/* Clock numbers */}
+          {['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'].map((number, index) => (
+            <div
+              key={number}
+              className="number absolute w-6 text-center"
+              style={{
+                transform: `rotate(${index * 30}deg) translateY(-220px)`
+              }}
+            >
+              {number}
+            </div>
+          ))}
+
+          {/* Clock hands */}
+          <div
+            className="hour-hand"
+            style={{
+              transform: `rotate(${hourDegrees}deg)`
+            }}
+          >
+            <SharkIcon />
+          </div>
+          <div
+            className="minute-hand"
+            style={{
+              transform: `rotate(${minuteDegrees}deg)`
+            }}
+          >
+            <TortoiseIcon />
+          </div>
+          <div
+            className="second-hand"
+            style={{
+              transform: `rotate(${secondDegrees}deg)`
+            }}
+          >
+            <DolphinIcon />
+          </div>
+        </div>
+
+        <div className="controls">
+          <select
+            value={timezone}
+            onChange={(e) => setTimezone(e.target.value)}
+            className="block1"
+          >
+            <option value="Asia/Tokyo">日本 (アジア/東京)</option>
+            <option value="America/New_York">ニューヨーク (アメリカ/ニューヨーク)</option>
+            <option value="Europe/London">ロンドン (ヨーロッパ/ロンドン)</option>
+            <option value="Europe/Paris">パリ (ヨーロッパ/パリ)</option>
+            <option value="America/Los_Angeles">ロサンゼルス (アメリカ/ロサンゼルス)</option>
+          </select>
+
+          <select
+            value={currentBackground}
+            onChange={(e) => setCurrentBackground(e.target.value)}
+            className="block2"
+          >
+            <option value="bg-default">デフォルト</option>
+            <option value="bg-aquarium">水族館</option>
+            <option value="bg-beach">ビーチ</option>
+            <option value="bg-deep-sea">深海</option>
+            <option value="bg-sunset-beach">夕焼け</option>
+          </select>
+
+          <select
+            value={currentBubbleGradation}
+            onChange={(e) => setBubbleGradation(e.target.value)}
+            className="block3"
+          >
+            <option value="default">デフォルト</option>
+            <option value="none">泡無し</option>
+            <option value="ocean-blue">海の青</option>
+            <option value="coral-reef">珊瑚礁</option>
+            <option value="deep-sea">深海</option>
+            <option value="tropical">熱帯</option>
+          </select>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default Clock;

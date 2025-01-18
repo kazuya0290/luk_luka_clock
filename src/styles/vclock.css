@@ -1,0 +1,398 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 110vh;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.bg-default {
+    background: linear-gradient(135deg, #87CEEB, #4682B4);
+}
+
+.bg-aquarium {
+    background: linear-gradient(135deg, #00BFFF, #4682B4, #1E90FF);
+}
+
+.bg-beach {
+    background: linear-gradient(135deg, #FFD700, #FFA500, #FF6347);
+}
+
+.bg-deep-sea {
+    background: linear-gradient(135deg, #000080, #191970, #00008B);
+}
+
+.bg-sunset-beach {
+    background: linear-gradient(180deg, #FF7F5F, #FF0000, #FFD700);
+}
+
+.bubble {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, white, rgba(0, 0, 255, 0.3));
+    box-shadow: 0 4px 8px rgba(0, 0, 255, 0.9);
+
+    animation: bubbleAnimation 6s ease-in-out infinite;
+    animation-delay: calc(-6s * var(--i));
+}
+
+.bubble-gradation-none .bubble {
+    display: none;
+}
+
+/* デフォルトのグラデーションスタイル */
+.bubble-gradation-default .bubble {
+    background: linear-gradient(135deg, white, rgba(0, 0, 255, 0.3));
+    box-shadow: 0 4px 8px rgba(0, 0, 255, 0.9);
+}
+
+/* 海の青のグラデーション */
+.bubble-gradation-ocean-blue .bubble {
+    background: linear-gradient(135deg, #87CEEB, #4682B4);
+    box-shadow: 0 4px 8px rgba(70, 130, 180, 0.7);
+}
+
+/* 珊瑚礁のグラデーション */
+.bubble-gradation-coral-reef .bubble {
+    background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.7);
+}
+
+/* 深海のグラデーション */
+.bubble-gradation-deep-sea .bubble {
+    background: linear-gradient(135deg, #000080, #191970);
+    box-shadow: 0 4px 8px rgba(0, 0, 128, 0.7);
+}
+
+/* 熱帯のグラデーション */
+.bubble-gradation-tropical .bubble {
+    background: linear-gradient(135deg, #00CED1, #7FFFD4);
+    box-shadow: 0 4px 8px rgba(0, 206, 209, 0.7);
+}
+
+/* 既存のアニメーションと他のスタイルは省略 */
+
+/* セレクターのスタイル追加 */
+.bubble-gradation-selector {
+    position: absolute;
+    right: 130px;
+    top: 60%;
+    transform: translateY(-50%);
+}
+
+.background-selector {
+    position: absolute;
+    right: 130px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.bubble-gradation-selector select {
+    padding: 10px;
+    font-size: 16px;
+    background-color: white;
+    border: 2px solid #000;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes bubbleAnimation {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100vh) scale(2);
+        opacity: 0;
+    }
+}
+
+
+.bubble:nth-child(odd) {
+    animation-duration: 6s;
+}
+
+.bubble:nth-child(even) {
+    animation-duration: 5s;
+}
+
+.bubble:nth-child(1) {
+    width: 25px;
+    height: 25px;
+}
+
+.bubble:nth-child(2) {
+    width: 35px;
+    height: 35px;
+}
+
+.bubble:nth-child(3) {
+    width: 40px;
+    height: 40px;
+}
+
+.bubble:nth-child(4) {
+    width: 28px;
+    height: 28px;
+}
+
+.bubble:nth-child(5) {
+    width: 45px;
+    height: 45px;
+}
+
+.bubble:nth-child(6) {
+    width: 30px;
+    height: 30px;
+}
+
+.bubble:nth-child(7) {
+    width: 50px;
+    height: 50px;
+}
+
+.controls {
+    margin-left:500px;
+}
+
+.clock {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    background-image: url('/sameno_uta.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 5px solid #000;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.clock-face {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(245, 243, 243, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.number {
+    position: absolute;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+    text-shadow:
+        1px 1px 0 #fff,
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff;
+}
+
+.twelve {
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.one {
+    top: 15%;
+    right: 15%;
+}
+
+.two {
+    top: 30.5%;
+    right: 10%;
+}
+
+.three {
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+}
+
+.four {
+    top: 65.5%;
+    right: 10%;
+}
+
+.five {
+    top: 80%;
+    right: 20%;
+}
+
+.six {
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.seven {
+    bottom: 15%;
+    left: 20%;
+}
+
+.eight {
+    bottom: 30%;
+    left: 10%;
+}
+
+.nine {
+    top: 50%;
+    left: 5%;
+    transform: translateY(-50%);
+}
+
+.ten {
+    top: 30%;
+    left: 10%;
+}
+
+.eleven {
+    top: 15%;
+    left: 20%;
+}
+
+.hour-hand,
+.minute-hand,
+.second-hand {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: 50% 100%;
+    transform: translate(-50%, -100%);
+}
+
+.hour-hand {
+    height: 30px;
+    width: 5px;
+    background-color: #000000;
+
+    transform: rotate(90deg);
+}
+
+.minute-hand {
+    height: 30px;
+    width: 3px;
+    background-color: #000000;
+
+}
+
+.second-hand {
+    height: 30px;
+    width: 2px;
+    background-color: red;
+
+}
+
+
+.hour-tip,
+.minute-tip,
+.second-tip {
+    position: absolute;
+    bottom: 100%;
+
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: transparent;
+
+}
+
+.hour-hand svg,
+.minute-hand svg,
+.second-hand svg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+}
+
+select {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px;
+    font-size: 16px;
+    background-color: white;
+    border: 2px solid #000;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timezone-selector {
+    position: absolute;
+    right: 20px;
+    top: 40%;
+    transform: translateY(-50%);
+}
+
+.timezone-selector select {
+    padding: 10px;
+    font-size: 16px;
+    background-color: white;
+    border: 2px solid #000;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 既存のコントロールコンテナのスタイルを削除 */
+.controls {
+    position: fixed;
+    right: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 100;
+}
+
+/* 個別のセレクトボックスのスタイル */
+.block1 {
+    position: fixed;
+    right: 40px;
+    top: 30%;
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: white;
+    border: 2px solid #000;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.block2 {
+    position: fixed;
+    right: 40px;
+    top: 45%;
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: white;
+    border: 2px solid #000;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.block3 {
+    position: fixed;
+    right: 40px;
+    top: 60%;
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: white;
+    border: 2px solid #000;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
