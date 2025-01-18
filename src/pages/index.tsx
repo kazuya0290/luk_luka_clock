@@ -169,7 +169,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
 
         <div className="controls">
           <div className="control-item">
-            <label htmlFor="timezone-select" className="block-label">タイムゾーン</label>
+            <label htmlFor="timezone-select" className="block-label1">タイムゾーン</label>
             <select
               id="timezone-select"
               value={timezone}
@@ -186,7 +186,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
           </div>
           
           <div className="control-item">
-            <label htmlFor="background-select" className="block-label">背景</label>
+            <label htmlFor="background-select" className="block-label2">背景</label>
           <select
             value={currentBackground}
             onChange={(e) => setCurrentBackground(e.target.value)}
@@ -201,7 +201,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
           </div>
 
           <div className="control-item">
-            <label htmlFor="bubble-select" className="block-label">泡の種類</label>
+            <label htmlFor="bubble-select" className="block-label3">泡の種類</label>
           <select
             value={currentBubbleGradation}
             onChange={(e) => setBubbleGradation(e.target.value)}
