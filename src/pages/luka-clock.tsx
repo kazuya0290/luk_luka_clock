@@ -4,6 +4,13 @@ import Icon from '@mdi/react';
 import { mdiRocket, mdiEarth, mdiStar } from '@mdi/js';
 import { useRouter } from 'next/router';
 
+interface ShootingStar {
+    left: number;
+    top: number;
+    key: number;
+    speed: number;
+}
+
 const RocketIcon = () => (
   <Icon path={mdiRocket} size={1} />
 );
@@ -28,7 +35,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   const [currentImage, setCurrentImage] = useState('luka01');
   const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, 
     size: number, delay: number }>>([]);
-    const [shootingStars, setShootingStars] = useState<Array<{ left: number, top: number, key: number }>>([]);
+    const [shootingStars, setShootingStars] = useState<ShootingStar[]>([]);
     const router = useRouter();
     const handleMoonClick = () => {
         if (router.pathname === "/luka-clock") {
