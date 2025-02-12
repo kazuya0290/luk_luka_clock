@@ -8,7 +8,7 @@ interface ShootingStar {
   left: number;
   top: number;
   key: number;
-  speed: number; 
+  speed: number;
 }
 
 const RocketIcon = () => (
@@ -34,9 +34,8 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   const [timezone, setTimezone] = useState(initialTimezone);
   const [currentBackground, setCurrentBackground] = useState('space-default');
   const [currentImage, setCurrentImage] = useState('image01');
-  const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, 
-    size: number, delay: number }>>([]);
-  
+  const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, size: number, delay: number }>>([]);
+
   const router = useRouter();
   const resetToDefaults = useCallback(() => {
     setTimezone('Asia/Tokyo');
@@ -60,7 +59,6 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
     }
   }, [mounted, initialTimezone]);
 
-  // 背景スタイルの定義
   const backgroundStyles = {
     'space-default': 'bg-gradient-to-b from-black via-purple-900 to-blue-900',
     'space-aurora': 'bg-gradient-to-b from-black via-green-900 to-blue-900',
@@ -93,7 +91,6 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   useEffect(() => {
     setMounted(true);
 
-    // 星の初期配置を生成
     const initialStars = Array.from({ length: 200 }, () => ({
       left: Math.random() * 100,
       top: Math.random() * 100,
@@ -101,42 +98,22 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
       delay: Math.random() * 5
     }));
     setStarPositions(initialStars);
-    // 流れ星の生成
-    {/* Update shooting star generation function */ }
+
     const createShootingStar = () => {
-      const star = {
+      const star: ShootingStar = {
         left: Math.random() * 100,
         top: Math.random() * 50,
         key: Date.now(),
-        speed: Math.random() * 0.5 + 1 // Random speed between 1-3 seconds
+        speed: Math.random() * 0.5 + 1
       };
       setShootingStars(prev => [...prev, star]);
 
       setTimeout(() => {
         setShootingStars(prev => prev.filter(s => s.key !== star.key));
-      }, star.speed * 1500); // Adjust duration based on speed
+      }, star.speed * 1500);
     };
 
-    {/* Update shooting star rendering */ }
-    {
-      shootingStars.map((star) => (
-        <div
-          key={star.key}
-          className="absolute animate-shooting-star"
-          style={{
-            left: `${star.left}%`,
-            top: `${star.top}%`,
-            animationDuration: `${star.speed}s` // Dynamic speed
-          }}
-        >
-          <div className="w-0.5 h-16 bg-white transform -rotate-45 origin-bottom-left animate-diagonal-streak opacity-80" />
-        </div>
-      ))
-    }
-    // 1分ごとに流れ星を生成
     const shootingStarInterval = setInterval(createShootingStar, 30000);
-
-    // コンポーネントのマウント時に最初の流れ星を生成
     createShootingStar();
 
     return () => {
@@ -177,41 +154,40 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   return (
     <div className={`relative min-h-screen ${backgroundStyles[currentBackground]} overflow-hidden`}>
       <div className="fixed inset-0">
-      <div className="background-container">
-        <div className={currentBackground === 'space-animated' ? 'cosmic-gradient' : backgroundStyles[currentBackground]} />
-        {currentBackground === 'space-animated' && <div className="cosmic-overlay" />}
-      </div>
-
-      {/* Stars and shooting stars */}
-      {starPositions.map((star, index) => (
-        <div
-          key={index}
-          className="absolute rounded-full bg-white animate-twinkle"
-          style={{
-            left: `${star.left}%`,
-            top: `${star.top}%`,
-            width: `${star.size}px`,
-            height: `${star.size}px`,
-            animationDelay: `${star.delay}s`,
-            boxShadow: `0 0 ${star.size * 2}px ${star.size}px rgba(255, 255, 255, 0.7)`
-          }}
-        />
-      ))}
-
-      {shootingStars.map((star) => (
-        <div
-          key={star.key}
-          className="absolute animate-shooting-star"
-          style={{
-            left: `${star.left}%`,
-            top: `${star.top}%`
-          }}
-        >
-          <div className="w-0.5 h-16 bg-white transform -rotate-45 origin-bottom-left animate-diagonal-streak opacity-80" />
+        <div className="background-container">
+          <div className={currentBackground === 'space-animated' ? 'cosmic-gradient' : backgroundStyles[currentBackground]} />
+          {currentBackground === 'space-animated' && <div className="cosmic-overlay" />}
         </div>
-      ))}
 
-      {/* Celestial bodies */}
+        {starPositions.map((star, index) => (
+          <div
+            key={index}
+            className="absolute rounded-full bg-white animate-twinkle"
+            style={{
+              left: `${star.left}%`,
+              top: `${star.top}%`,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              animationDelay: `${star.delay}s`,
+              boxShadow: `0 0 ${star.size * 2}px ${star.size}px rgba(255, 255, 255, 0.7)`
+            }}
+          />
+        ))}
+
+        {shootingStars.map((star) => (
+          <div
+            key={star.key}
+            className="absolute animate-shooting-star"
+            style={{
+              left: `${star.left}%`,
+              top: `${star.top}%`,
+              animationDuration: `${star.speed}s`
+            }}
+          >
+            <div className="w-0.5 h-16 bg-white transform -rotate-45 origin-bottom-left animate-diagonal-streak opacity-80" />
+          </div>
+        ))}
+
         <div
           className="absolute right-10 top-10 w-32 h-32 rounded-full bg-gradient-to-br from-gray-200 to-gray-400 animate-glow cursor-pointer z-50"
           onClick={handleMoonClick}
@@ -229,128 +205,125 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
           <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent to-gray-900 opacity-20" />
         </div>
 
-      {/* Clock container */}
-      <div className="relative z-10">
-      <div className="flex flex-col items-center justify-center p-1">
-        <div className="digital-clock text-4xl mb-8 text-white">
-          {`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}
+        <div className="relative z-10">
+          <div className="flex flex-col items-center justify-center p-1">
+            <div className="digital-clock text-4xl mb-8 text-white">
+              {`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}
+            </div>
+
+            <div style={getClockStyle()} className="z-20">
+              <div className="clock-face">
+                {['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'].map((number, index) => (
+                  <div
+                    key={number}
+                    className="number absolute w-6 text-center text-white"
+                    style={{
+                      transform: `rotate(${index * 30}deg) translateY(-220px)`
+                    }}
+                  >
+                    {number}
+                  </div>
+                ))}
+
+                <div
+                  className="hour-hand absolute left-1/2 bottom-1/2 origin-bottom"
+                  style={{
+                    transform: `translate(-50%, 0) rotate(${hourDegrees}deg)`
+                  }}
+                >
+                  <div className="hand-line1" style={{ transform: 'scaleY(2.3)' }} />
+                  <div className="hand-icon1">
+                    <RocketIcon />
+                  </div>
+                </div>
+                <div
+                  className="minute-hand absolute left-1/2 bottom-1/2 origin-bottom"
+                  style={{
+                    transform: `translate(-50%, 0) rotate(${minuteDegrees}deg)`
+                  }}
+                >
+                  <div className="hand-line2" style={{ transform: 'scaleY(4.0)' }} />
+                  <div className="hand-icon2">
+                    <EarthIcon />
+                  </div>
+                </div>
+                <div
+                  className="second-hand absolute left-1/2 bottom-1/2 origin-bottom"
+                  style={{
+                    transform: `translate(-50%, 0) rotate(${secondDegrees}deg)`
+                  }}
+                >
+                  <div className="hand-line3" style={{ transform: 'scaleY(5.3)' }} />
+                  <div className="hand-icon3">
+                    <StarIcon />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-          <div style={getClockStyle()} className="z-20">
-          <div className="clock-face">
-            {/* Clock numbers */}
-            {['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'].map((number, index) => (
-              <div
-                key={number}
-                className="number absolute w-6 text-center text-white"
-                style={{
-                  transform: `rotate(${index * 30}deg) translateY(-220px)`
-                }}
+        <div className="fixed right-10 top-10 space-y-8 z-50">
+          <div className="controls fixed right-10 top-10 space-y-8 z-50">
+            <div className="control-item">
+              <label htmlFor="image-select" className="block1 text-white mb-2">Image</label>
+              <select
+                id="image-select"
+                value={currentImage}
+                onChange={(e) => setCurrentImage(e.target.value)}
+                className="bg-gray-800 text-white p-2 rounded w-50 mb-10"
               >
-                {number}
-              </div>
-            ))}
+                <option value="image01">Image 1</option>
+                <option value="image02">Image 2</option>
+                <option value="image03">Image 3</option>
+                <option value="image04">Image 4</option>
+                <option value="image05">Image 5</option>
+                <option value="image06">Image 6</option>
+              </select>
+            </div>
 
-            {/* Clock hands */}
-            <div
-              className="hour-hand absolute left-1/2 bottom-1/2 origin-bottom"
-              style={{
-                transform: `translate(-50%, 0) rotate(${hourDegrees}deg)`
-              }}
-            >
-              <div className="hand-line1" style={{ transform: 'scaleY(2.3)' }} />
-              <div className="hand-icon1">
-                <RocketIcon />
-              </div>
+            <div className="control-item">
+              <label htmlFor="timezone-select" className="block2 text-white">Timezone</label>
+              <select
+                id="timezone-select"
+                value={timezone}
+                onChange={(e) => setTimezone(e.target.value)}
+                className="bg-gray-800 text-white p-2 rounded"
+              >
+                <option value="Asia/Tokyo">Asia/Tokyo</option>
+                <option value="Asia/Taipei">Asia/Taipei</option>
+                <option value="America/New_York">America/New_York</option>
+                <option value="Europe/London">Europe/London</option>
+                <option value="Europe/Paris">Europe/Paris</option>
+                <option value="America/Los_Angeles">America/Los_Angeles</option>
+              </select>
             </div>
-            <div
-              className="minute-hand absolute left-1/2 bottom-1/2 origin-bottom"
-              style={{
-                transform: `translate(-50%, 0) rotate(${minuteDegrees}deg)`
-              }}
-            >
-              <div className="hand-line2" style={{ transform: 'scaleY(4.0)' }} />
-              <div className="hand-icon2">
-                <EarthIcon />
-              </div>
-            </div>
-            <div
-              className="second-hand absolute left-1/2 bottom-1/2 origin-bottom"
-              style={{
-                transform: `translate(-50%, 0) rotate(${secondDegrees}deg)`
-              }}
-            >
-              <div className="hand-line3" style={{ transform: 'scaleY(5.3)' }} />
-              <div className="hand-icon3">
-                <StarIcon />
-              </div>
+
+            <div className="control-item">
+              <label htmlFor="background-select" className="block3 text-white mb-2">Background</label>
+              <select
+                id="background-select"
+                value={currentBackground}
+                onChange={(e) => setCurrentBackground(e.target.value)}
+                className="bg-gray-800 text-white p-2 rounded"
+              >
+                <option value="space-default">Default</option>
+                <option value="space-aurora">Aurora</option>
+                <option value="space-nebula">Nebula</option>
+                <option value="space-galaxy">Galaxy</option>
+                <option value="space-sunset">Sunset</option>
+                <option value="space-deep">Deep</option>
+                <option value="space-cosmos">Galaxy2</option>
+                <option value="space-milkyway">Milkyway</option>
+                <option value="space-stardust">Star-dust</option>
+                <option value="space-supernova">Supernova</option>
+                <option value="space-animated">Animation</option>
+              </select>
             </div>
           </div>
         </div>
       </div>
     </div>
-        {/* Controls */}
-        <div className="fixed right-10 top-10 space-y-8 z-50">
-      <div className="controls fixed right-10 top-10 space-y-8 z-50">
-        <div className="control-item">
-          <label htmlFor="image-select" className="block1 text-white mb-2">Image</label>
-          <select
-            id="image-select"
-            value={currentImage}
-            onChange={(e) => setCurrentImage(e.target.value)}
-            className="bg-gray-800 text-white p-2 rounded w-50 mb-10"
-          >
-            <option value="image01">Image 1</option>
-            <option value="image02">Image 2</option>
-            <option value="image03">Image 3</option>
-            <option value="image04">Image 4</option>
-            <option value="image05">Image 5</option>
-            <option value="image06">Image 6</option>
-          </select>
-        </div>
-
-        <div className="control-item">
-          <label htmlFor="timezone-select" className="block2 text-white">Timezone</label>
-          <select
-            id="timezone-select"
-            value={timezone}
-            onChange={(e) => setTimezone(e.target.value)}
-            className="bg-gray-800 text-white p-2 rounded"
-          >
-            <option value="Asia/Tokyo">Asia/Tokyo</option>
-            <option value="Asia/Taipei">Asia/Taipei</option>
-            <option value="America/New_York">America/New_York</option>
-            <option value="Europe/London">Europe/London</option>
-            <option value="Europe/Paris">Europe/Paris</option>
-            <option value="America/Los_Angeles">America/Los_Angeles</option>
-          </select>
-        </div>
-
-        <div className="control-item">
-          <label htmlFor="background-select" className="block3 text-white mb-2">Background</label>
-          <select
-            id="background-select"
-            value={currentBackground}
-            onChange={(e) => setCurrentBackground(e.target.value)}
-            className="bg-gray-800 text-white p-2 rounded"
-          >
-            <option value="space-default">Default</option>
-            <option value="space-aurora">Aurora</option>
-            <option value="space-nebula">Nebula</option>
-            <option value="space-galaxy">Galaxy</option>
-            <option value="space-sunset">Sunset</option>
-            <option value="space-deep">Deep</option>
-            <option value="space-cosmos">Galaxy2</option>
-            <option value="space-milkyway">Milkyway</option>
-            <option value="space-stardust">Star-dust</option>
-            <option value="space-supernova">Supernova</option>
-            <option value="space-animated">Animation</option>
-          </select>
-        </div>
-      </div>
-      </div>
-      </div>
-      </div>
   );
 };
 
