@@ -427,7 +427,7 @@ select {
 .block1 {
     font-weight: bold;
     margin-top: 150px;
-    margin-left:-150px;
+    margin-left:-170px;
     display:block;
     position:absolute;
     /* ラベルをブロック要素にして縦に並べる */

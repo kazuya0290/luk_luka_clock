@@ -25,33 +25,22 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   const [time, setTime] = useState<Date | null>(null);
   const [timezone, setTimezone] = useState(initialTimezone);
   const [currentBackground, setCurrentBackground] = useState('space-default');
-  const [currentImage, setCurrentImage] = useState('image01');
+  const [currentImage, setCurrentImage] = useState('luka01');
   const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, 
     size: number, delay: number }>>([]);
-  const [shootingStars, setShootingStars] = useState<Array<{ left: number, top: number, key: number }>>([]);
-  const router = useRouter();
-  const resetToDefaults = useCallback(() => {
-    setTimezone('Asia/Tokyo');
-    setCurrentBackground('space-default');
-    setCurrentImage('image01');
-  }, []);
-
-  const handleMoonClick = useCallback(() => {
-    if (router.pathname === "/luka-clock") {
-      router.push("/");
-    } else {
-      resetToDefaults();
-    }
-  }, [router, resetToDefaults]);
-
-  useEffect(() => {
-    if (!mounted) {
-      setTimezone(initialTimezone);
-      setCurrentBackground('space-default');
-      setCurrentImage('image01');
-    }
-  }, [mounted, initialTimezone]);
-
+    const [shootingStars, setShootingStars] = useState<Array<{ left: number, top: number, key: number }>>([]);
+    const router = useRouter();
+    const handleMoonClick = () => {
+        if (router.pathname === "/luka-clock") {
+            // `clock-detail.tsx` にいる場合 → `/` に戻る
+            router.push("/");
+        } else {
+            // `index.tsx` にいる場合 → タイムゾーンと背景をリセット
+            setTimezone("Asia/Tokyo");
+            setCurrentBackground("space-default");
+            console.log("Reset timezone and background to default");
+        }
+    };
   // 背景スタイルの定義
   const backgroundStyles = {
     'space-default': 'bg-gradient-to-b from-black via-purple-900 to-blue-900',
@@ -204,22 +193,12 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
       ))}
 
       {/* Celestial bodies */}
-        <div
-          className="absolute right-10 top-10 w-32 h-32 rounded-full bg-gradient-to-br from-gray-200 to-gray-400 animate-glow cursor-pointer z-50"
-          onClick={handleMoonClick}
-          title="Reset to defaults"
-        >
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent to-gray-900 opacity-20" />
-        </div>
-
-        <div
-          className="absolute left-10 top-10 w-32 h-32 rounded-full bg-gradient-to-br from-blue-200 to-blue-400 animate-glow cursor-pointer z-50"
-          onClick={() => {
-            router.push("/luka-clock");
-          }}
-        >
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent to-gray-900 opacity-20" />
-        </div>
+              <div
+                  className="absolute right-10 top-10 w-32 h-32 rounded-full bg-gradient-to-br from-gray-200 to-gray-400 animate-glow cursor-pointer z-50"
+                  onClick={handleMoonClick}
+              >
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent to-gray-900 opacity-20" />
+              </div>
 
       {/* Clock container */}
       <div className="relative z-10">
@@ -285,19 +264,16 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
         <div className="fixed right-10 top-10 space-y-8 z-50">
       <div className="controls fixed right-10 top-10 space-y-8 z-50">
         <div className="control-item">
-          <label htmlFor="image-select" className="block1 text-white mb-2">Image</label>
+          <label htmlFor="image-select" className="block1 text-white mb-2">Luka_image</label>
           <select
             id="image-select"
             value={currentImage}
             onChange={(e) => setCurrentImage(e.target.value)}
             className="bg-gray-800 text-white p-2 rounded w-50 mb-10"
           >
-            <option value="image01">Image 1</option>
-            <option value="image02">Image 2</option>
-            <option value="image03">Image 3</option>
-            <option value="image04">Image 4</option>
-            <option value="image05">Image 5</option>
-            <option value="image06">Image 6</option>
+            <option value="luka01">Luka 1</option>
+            <option value="luka02">Luka 2</option>
+            <option value="luka03">Luka 3</option>
           </select>
         </div>
 
