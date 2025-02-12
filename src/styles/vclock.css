@@ -22,154 +22,6 @@ body {
     bottom: 0;
 }
 
-.bg-default {
-    background: linear-gradient(135deg, #87CEEB, #4682B4);
-}
-
-.bg-aquarium {
-    background: linear-gradient(135deg, #00BFFF, #4682B4, #1E90FF);
-}
-
-.bg-beach {
-    background: linear-gradient(135deg, #FFD700, #FFA500, #FF6347);
-}
-
-.bg-deep-sea {
-    background: linear-gradient(135deg, #000080, #191970, #00008B);
-}
-
-.bg-sunset-beach {
-    background: linear-gradient(180deg, #FF7F5F, #FF0000, #FFD700);
-}
-
-.bubble {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, white, rgba(0, 0, 255, 0.3));
-    box-shadow: 0 4px 8px rgba(0, 0, 255, 0.9);
-
-    animation: bubbleAnimation 6s ease-in-out infinite;
-    animation-delay: calc(-6s * var(--i));
-}
-
-.bubble-gradation-none .bubble {
-    display: none;
-}
-
-/* デフォルトのグラデーションスタイル */
-.bubble-gradation-default .bubble {
-    background: linear-gradient(135deg, white, rgba(0, 0, 255, 0.3));
-    box-shadow: 0 4px 8px rgba(0, 0, 255, 0.9);
-}
-
-/* 海の青のグラデーション */
-.bubble-gradation-ocean-blue .bubble {
-    background: linear-gradient(135deg, #87CEEB, #4682B4);
-    box-shadow: 0 4px 8px rgba(70, 130, 180, 0.7);
-}
-
-/* 珊瑚礁のグラデーション */
-.bubble-gradation-coral-reef .bubble {
-    background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
-    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.7);
-}
-
-/* 深海のグラデーション */
-.bubble-gradation-deep-sea .bubble {
-    background: linear-gradient(135deg, #000080, #191970);
-    box-shadow: 0 4px 8px rgba(0, 0, 128, 0.7);
-}
-
-/* 熱帯のグラデーション */
-.bubble-gradation-tropical .bubble {
-    background: linear-gradient(135deg, #00CED1, #7FFFD4);
-    box-shadow: 0 4px 8px rgba(0, 206, 209, 0.7);
-}
-
-/* 既存のアニメーションと他のスタイルは省略 */
-
-/* セレクターのスタイル追加 */
-.bubble-gradation-selector {
-    position: absolute;
-    right: 130px;
-    top: 60%;
-    transform: translateY(-50%);
-}
-
-.background-selector {
-    position: absolute;
-    right: 130px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.bubble-gradation-selector select {
-    padding: 10px;
-    font-size: 16px;
-    background-color: white;
-    border: 2px solid #000;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-@keyframes bubbleAnimation {
-    0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(-100vh) scale(2);
-        opacity: 0;
-    }
-}
-
-
-.bubble:nth-child(odd) {
-    animation-duration: 6s;
-}
-
-.bubble:nth-child(even) {
-    animation-duration: 5s;
-}
-
-.bubble:nth-child(1) {
-    width: 25px;
-    height: 25px;
-}
-
-.bubble:nth-child(2) {
-    width: 35px;
-    height: 35px;
-}
-
-.bubble:nth-child(3) {
-    width: 40px;
-    height: 40px;
-}
-
-.bubble:nth-child(4) {
-    width: 28px;
-    height: 28px;
-}
-
-.bubble:nth-child(5) {
-    width: 45px;
-    height: 45px;
-}
-
-.bubble:nth-child(6) {
-    width: 30px;
-    height: 30px;
-}
-
-.bubble:nth-child(7) {
-    width: 50px;
-    height: 50px;
-}
-
 .controls {
     margin-left:500px;
     display: flex;
@@ -182,19 +34,47 @@ body {
         /* 中央揃え */
 }
 
-.clock {
+.background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+}
+
+.cosmic-gradient {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg,
+                #000000,
+                #1a237e,
+                #311b92,
+                #4a148c,
+                #311b92,
+                #1a237e,
+                #000000);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+}
+
+/* hue-rotateアニメーションを背景用の新しい要素に適用 */
+.cosmic-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    animation: cosmic-shift 20s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* 時計のコンテナを独立させる */
+.clock-container {
     position: relative;
-    width: 500px;
-    height: 500px;
-    margin-top:10px;
-    background-image: url('/sameno_uta.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border: 5px solid #000;
-    border-radius: 50%;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
+    z-index: 1;
+    isolation: isolate;
 }
 
 .clock-face {
@@ -209,10 +89,106 @@ body {
     align-items: center;
 }
 
+#image-select {
+    margin-top: 130px;
+    /* 画像セレクトボックスを少し下げる */
+}
+
+#timezone-select {
+    margin-top: 210px;
+    /* タイムゾーンセレクトボックスをさらに下げる */
+}
+
+#background-select {
+    margin-top: 290px;
+    /* 背景セレクトボックスをさらに下げる */
+}
+
+@keyframes cosmic-shift {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+
+    25% {
+        filter: hue-rotate(90deg);
+    }
+
+    50% {
+        filter: hue-rotate(180deg);
+    }
+
+    75% {
+        filter: hue-rotate(270deg);
+    }
+
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.cosmic-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom,
+            transparent,
+            rgba(255, 255, 255, 0.05));
+    animation: auroraEffect 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+
+@keyframes auroraEffect {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: translateY(0);
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: translateY(-20px);
+    }
+}
+
+.cosmic-gradient::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at center,
+            white 0.1px,
+            transparent 0.5px);
+    background-size: 50px 50px;
+    animation: twinkleEffect 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
 .digital-clock {
-    color: gray;
+    color: white;
     font-family: 'Roboto Mono', monospace;
-    margin-top:-200px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    margin-bottom: 2rem;
 }
 
 .number {
@@ -309,7 +285,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #000;
+    background-color: #42A5F5;
     transform-origin: bottom;
 }
 
@@ -317,7 +293,15 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #fc0000;
+    background-color: #AB47BC;
+    transform-origin: bottom;
+}
+
+.hand-line3 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #024b02;
     transform-origin: bottom;
 }
 
@@ -329,6 +313,7 @@ body {
     width: 24px;
     height: 60px;
     display: flex;
+    color:crimson;
     justify-content: center;
     align-items: center;
 }
@@ -341,6 +326,7 @@ body {
     width: 24px;
     height: 120px;
     display: flex;
+    color:blue;
     justify-content: center;
     align-items: center;
 }
@@ -353,6 +339,7 @@ body {
     width: 24px;
     height: 160px;
     display: flex;
+    color:#FFEE58;
     justify-content: center;
     align-items: center;
 }
@@ -403,30 +390,22 @@ body {
 select {
     position: absolute;
     right: 20px;
-    top: 50%;
+    top: 70%;
     transform: translateY(-50%);
     padding: 10px;
     font-size: 16px;
+    width: 200px;
     background-color: white;
     border: 2px solid #000;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.timezone-selector {
+.timezone-select {
     position: absolute;
-    right: 20px;
-    top: 40%;
+    right: 50px;
+    margin-top: 50px;
     transform: translateY(-50%);
-}
-
-.timezone-selector select {
-    padding: 10px;
-    font-size: 16px;
-    background-color: white;
-    border: 2px solid #000;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* 既存のコントロールコンテナのスタイルを削除 */
@@ -445,76 +424,198 @@ select {
 }
 
 /* ラベルの共通設定 */
-.block-label1,
-.block-label2,
-.block-label3 {
+.block1 {
     font-weight: bold;
-    margin-bottom: 80px;
-    display: block;
+    margin-top: 150px;
+    margin-left:-150px;
+    display:block;
+    position:absolute;
     /* ラベルをブロック要素にして縦に並べる */
 }
 
-/* 1つ目のラベル */
-.block-label1 {
-    margin-top: 20px;
-    margin-left: -300px;
-    /* セレクトボックスの上に余白を追加 */
-}
-
-/* 2つ目のラベル */
-.block-label2 {
-    margin-top: 30px;
-    margin-left: -280px;
-    /* セレクトボックスの上に余白を追加 */
-}
-
-/* 3つ目のラベル */
-.block-label3 {
-    margin-top: 40px;
-    margin-left: -290px;
-    /* セレクトボックスの上に余白を追加 */
-}
-
-/* 個別のセレクトボックスのスタイル */
-.block1 {
-    position: fixed;
-    right: 200px;
-    top: 30%;
-    width: 200px;
-    padding: 10px;
-    font-size: 16px;
-    background-color: white;
-    border: 2px solid #000;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: -11px;
-}
-
 .block2 {
-    position: fixed;
-    right: 200px;
-    top: 55%;
-    width: 200px;
-    padding: 10px;
-    font-size: 16px;
-    background-color: white;
-    border: 2px solid #000;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 3px;
+    font-weight: bold;
+    margin-top: 180px;
+    margin-left: -160px;
+    display:block;
+    position:absolute;
+    /* ラベルをブロック要素にして縦に並べる */
 }
 
 .block3 {
-    position: fixed;
-    right: 200px;
-    top: 83%;
-    width: 200px;
-    padding: 10px;
-    font-size: 16px;
-    background-color: white;
-    border: 2px solid #000;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 17px;
+    font-weight: bold;
+    margin-top: 210px;
+    margin-left: -170px;
+    position:absolute;
+    /* ラベルをブロック要素にして縦に並べる */
 }
 
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 30px 15px rgba(255, 255, 255, 0.5);
+    }
+}
+
+.animate-twinkle {
+    animation: twinkle 3s infinite ease-in-out;
+}
+
+.animate-glow {
+    animation: glow 4s infinite ease-in-out;
+}
+
+/* タブレット・スマホ用のレスポンシブデザイン */
+@media (max-width: 768px) {
+
+    /* 時計のサイズ調整 */
+    .clock {
+        width: 300px;
+        height: 300px;
+        margin-top: 40px;
+    }
+
+    /* デジタル時計のサイズと位置調整 */
+    .digital-clock {
+        font-size: 1.5rem;
+        margin-top: -120px;
+    }
+
+    /* コントロールパネルの位置調整 */
+    .controls {
+        position: relative;
+        right: auto;
+        margin-top: 30px;
+        padding: 0 20px;
+    }
+
+    /* 時計の文字盤の数字サイズ調整 */
+    .number {
+        font-size: 1rem;
+    }
+
+    /* アイコンサイズの調整 */
+    .hand-icon1,
+    .hand-icon2,
+    .hand-icon3 {
+        width: 16px;
+        height: 40px;
+    }
+
+    .hand-icon1 svg,
+    .hand-icon2 svg,
+    .hand-icon3 svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* 針の長さ調整 */
+    .hand-line1 {
+        transform: scaleY(1.8) !important;
+    }
+
+    .hand-line2 {
+        transform: scaleY(3.0) !important;
+    }
+
+    .hand-line3 {
+        transform: scaleY(4.0) !important;
+    }
+
+    /* セレクトボックスのスタイル調整 */
+    select {
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
+    }
+
+    .block1,
+    .block2 {
+        margin: 0;
+        padding: 10px 0;
+        text-align: center;
+    }
+
+    /* コントロール項目のスペーシング */
+    .control-item {
+        margin-bottom: 20px;
+    }
+}
+
+/* より小さい画面サイズ用の追加調整 */
+@media (max-width: 480px) {
+    .clock {
+        width: 250px;
+        height: 250px;
+    }
+
+    .digital-clock {
+        font-size: 1.25rem;
+        margin-top: -100px;
+    }
+
+    /* 文字盤の数字をさらに小さく */
+    .number {
+        font-size: 0.875rem;
+    }
+
+    /* アイコンをさらに小さく */
+    .hand-icon1,
+    .hand-icon2,
+    .hand-icon3 {
+        width: 14px;
+        height: 30px;
+    }
+
+    .hand-icon1 svg,
+    .hand-icon2 svg,
+    .hand-icon3 svg {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+/* 星のアニメーションの位置調整 */
+@media (max-width: 768px) {
+    .animate-twinkle {
+        transform-origin: center;
+        transform: scale(0.6);
+    }
+
+    .animate-glow {
+        transform: scale(0.8);
+    }
+}
+
+/* 全体のレイアウト調整 */
+@media (max-width: 768px) {
+    .min-h-screen {
+        padding: 20px;
+    }
+
+    .clock-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}

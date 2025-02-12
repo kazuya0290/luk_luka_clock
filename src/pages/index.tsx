@@ -1,19 +1,18 @@
 "use client";
-import React, { useState, useEffect,useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Icon from '@mdi/react';
-import { mdiShark, mdiTortoise, mdiDolphin } from '@mdi/js';
+import { mdiRocket, mdiEarth, mdiStar } from '@mdi/js';
 
-// カスタムSVGコンポーネントの定義（変更なし）
-const DolphinIcon = () => (
-  <Icon path={mdiDolphin} size={1} />
+const RocketIcon = () => (
+  <Icon path={mdiRocket} size={1} />
 );
 
-const TortoiseIcon = () => (
-  <Icon path={mdiTortoise} size={1} />
+const EarthIcon = () => (
+  <Icon path={mdiEarth} size={1} />
 );
 
-const SharkIcon = () => (
-  <Icon path={mdiShark} size={1} />
+const StarIcon = () => (
+  <Icon path={mdiStar} size={1} />
 );
 
 interface ClockProps {
@@ -24,24 +23,95 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   const [mounted, setMounted] = useState(false);
   const [time, setTime] = useState<Date | null>(null);
   const [timezone, setTimezone] = useState(initialTimezone);
-  const [currentBackground, setCurrentBackground] = useState('bg-default');
-  const [currentBubbleGradation, setBubbleGradation] = useState('default');
-  const [bubblePositions, setBubblePositions] = useState<Array<{ left: number, bottom: number, delay: number }>>([]);
-  
-  
-  // マウント状態の管理
+  const [currentBackground, setCurrentBackground] = useState('space-default');
+  const [currentImage, setCurrentImage] = useState('image01');
+  const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, 
+    size: number, delay: number }>>([]);
+  const [shootingStars, setShootingStars] = useState<Array<{ left: number, top: number, key: number }>>([]);
+  // 背景スタイルの定義
+  const backgroundStyles = {
+    'space-default': 'bg-gradient-to-b from-black via-purple-900 to-blue-900',
+    'space-aurora': 'bg-gradient-to-b from-black via-green-900 to-blue-900',
+    'space-nebula': 'bg-gradient-to-b from-purple-900 via-pink-900 to-blue-900',
+    'space-galaxy': 'bg-gradient-to-b from-black via-blue-900 to-purple-900',
+    'space-sunset': 'bg-gradient-to-b from-black via-red-900 to-purple-900',
+    'space-deep': 'bg-gradient-to-b from-indigo-950 via-blue-950 to-purple-950',
+    'space-cosmos': 'bg-gradient-to-b from-violet-950 via-fuchsia-900 to-blue-950',
+    'space-milkyway': 'bg-gradient-to-b from-slate-950 via-indigo-900 to-violet-950',
+    'space-stardust': 'bg-gradient-to-b from-purple-950 via-pink-900 to-indigo-950',
+    'space-supernova': 'bg-gradient-to-b from-rose-950 via-orange-900 to-purple-950',
+    'space-animated': 'cosmic-gradient'
+  };
+
+  const getClockStyle = useCallback(() => ({
+    position: 'relative' as const,
+    width: '500px',
+    height: '500px',
+    marginTop: '10px',
+    backgroundImage: `url('/${currentImage}.jpg')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    border: '5px solid #000',
+    borderRadius: '50%',
+    boxShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
+    overflow: 'hidden'
+  }), [currentImage]);
+
   useEffect(() => {
     setMounted(true);
-    // 初期バブル位置の設定
-    const initialBubbles = Array.from({ length: 100 }, () => ({
+
+    // 星の初期配置を生成
+    const initialStars = Array.from({ length: 200 }, () => ({
       left: Math.random() * 100,
-      bottom: Math.random() * 100,
+      top: Math.random() * 100,
+      size: Math.random() * 3 + 1,
       delay: Math.random() * 5
     }));
-    setBubblePositions(initialBubbles);
+    setStarPositions(initialStars);
+    // 流れ星の生成
+    {/* Update shooting star generation function */ }
+    const createShootingStar = () => {
+      const star = {
+        left: Math.random() * 100,
+        top: Math.random() * 50,
+        key: Date.now(),
+        speed: Math.random() * 0.5 + 1 // Random speed between 1-3 seconds
+      };
+      setShootingStars(prev => [...prev, star]);
+
+      setTimeout(() => {
+        setShootingStars(prev => prev.filter(s => s.key !== star.key));
+      }, star.speed * 1500); // Adjust duration based on speed
+    };
+
+    {/* Update shooting star rendering */ }
+    {
+      shootingStars.map((star) => (
+        <div
+          key={star.key}
+          className="absolute animate-shooting-star"
+          style={{
+            left: `${star.left}%`,
+            top: `${star.top}%`,
+            animationDuration: `${star.speed}s` // Dynamic speed
+          }}
+        >
+          <div className="w-0.5 h-16 bg-white transform -rotate-45 origin-bottom-left animate-diagonal-streak opacity-80" />
+        </div>
+      ))
+    }
+    // 1分ごとに流れ星を生成
+    const shootingStarInterval = setInterval(createShootingStar, 30000);
+
+    // コンポーネントのマウント時に最初の流れ星を生成
+    createShootingStar();
+
+    return () => {
+      clearInterval(shootingStarInterval);
+    };
   }, []);
 
-  // Time update effect
   useEffect(() => {
     if (!mounted) return;
 
@@ -53,33 +123,13 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
     return () => clearInterval(timer);
   }, [mounted]);
 
-  const createBubbles = useCallback(() => {
-    const newBubbles = Array.from({ length: 100 }, () => ({
-      left: Math.random() * 100,
-      bottom: Math.random() * 100,
-      delay: Math.random() * 5
-    }));
-    setBubblePositions(newBubbles);
-  }, []);
-
-  // Bubble creation effect
-  useEffect(() => {
-    if (!mounted) return;
-    if (currentBubbleGradation !== 'none') {
-      createBubbles();
-    }
-  }, [mounted, currentBubbleGradation, createBubbles]);
-
   const getTimeInTimezone = useCallback(() => {
     if (!time) return null;
     const options = { timeZone: timezone };
     return new Date(time.toLocaleString('en-US', options));
   }, [time, timezone]);
 
-  // クライアントサイドレンダリングのみを行う
-  if (!mounted || !time) {
-    return null; // 初期レンダリング時は何も表示しない
-  }
+  if (!mounted || !time) return null;
 
   const currentTime = getTimeInTimezone();
   if (!currentTime) return null;
@@ -93,131 +143,173 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   const hourDegrees = ((hours % 12) / 12) * 360 + ((minutes / 60) * 30);
 
   return (
-    <div className={`min-h-screen ${currentBackground} bubble-gradation-${currentBubbleGradation}`}>
-      
-      <div className="water-ripple"></div>
-      <div className="water-distortion"></div>
-      
-      {/* 泡のレンダリング */}
-      {currentBubbleGradation !== 'none' && bubblePositions.map((bubble, index) => (
+    <div className={`relative min-h-screen ${backgroundStyles[currentBackground]} overflow-hidden`}>
+      <div className="fixed inset-0">
+      <div className="background-container">
+        <div className={currentBackground === 'space-animated' ? 'cosmic-gradient' : backgroundStyles[currentBackground]} />
+        {currentBackground === 'space-animated' && <div className="cosmic-overlay" />}
+      </div>
+
+      {/* Stars and shooting stars */}
+      {starPositions.map((star, index) => (
         <div
           key={index}
-          className="bubble"
+          className="absolute rounded-full bg-white animate-twinkle"
           style={{
-            left: `${bubble.left}%`,
-            bottom: `${bubble.bottom}%`,
-            animationDelay: `${bubble.delay}s`
+            left: `${star.left}%`,
+            top: `${star.top}%`,
+            width: `${star.size}px`,
+            height: `${star.size}px`,
+            animationDelay: `${star.delay}s`,
+            boxShadow: `0 0 ${star.size * 2}px ${star.size}px rgba(255, 255, 255, 0.7)`
           }}
         />
       ))}
 
-      <div className="clock flex flex-col items-center justify-center p-8">
+      {shootingStars.map((star) => (
+        <div
+          key={star.key}
+          className="absolute animate-shooting-star"
+          style={{
+            left: `${star.left}%`,
+            top: `${star.top}%`
+          }}
+        >
+          <div className="w-0.5 h-16 bg-white transform -rotate-45 origin-bottom-left animate-diagonal-streak opacity-80" />
+        </div>
+      ))}
 
-        <div className="digital-clock text-4xl mb-8">
+      {/* Celestial bodies */}
+      <div className="absolute right-10 top-10 w-32 h-32 rounded-full bg-gradient-to-br from-gray-200 to-gray-400 animate-glow">
+        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent to-gray-900 opacity-20" />
+      </div>
+
+      <div className="absolute left-10 top-10 w-32 h-32 rounded-full bg-gradient-to-br from-blue-200 to-blue-400 animate-glow">
+        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent to-gray-900 opacity-20" />
+      </div>
+
+      {/* Clock container */}
+      <div className="relative z-10">
+      <div className="flex flex-col items-center justify-center p-1">
+        <div className="digital-clock text-4xl mb-8 text-white">
           {`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}
         </div>
 
-        <div className="clock-face relative w-64 h-64 border-4 border-gray-800 rounded-full bg-white">
-          {/* Clock numbers */}
-          {['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'].map((number, index) => (
+          <div style={getClockStyle()} className="z-20">
+          <div className="clock-face">
+            {/* Clock numbers */}
+            {['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'].map((number, index) => (
+              <div
+                key={number}
+                className="number absolute w-6 text-center text-white"
+                style={{
+                  transform: `rotate(${index * 30}deg) translateY(-220px)`
+                }}
+              >
+                {number}
+              </div>
+            ))}
+
+            {/* Clock hands */}
             <div
-              key={number}
-              className="number absolute w-6 text-center"
+              className="hour-hand absolute left-1/2 bottom-1/2 origin-bottom"
               style={{
-                transform: `rotate(${index * 30}deg) translateY(-220px)`
+                transform: `translate(-50%, 0) rotate(${hourDegrees}deg)`
               }}
             >
-              {number}
+              <div className="hand-line1" style={{ transform: 'scaleY(2.3)' }} />
+              <div className="hand-icon1">
+                <RocketIcon />
+              </div>
             </div>
-          ))}
-
-          {/* Clock hands */}
-          <div
-            className="hour-hand absolute left-1/2 bottom-1/2 origin-bottom"
-            style={{
-              transform: `translate(-50%, 0) rotate(${hourDegrees}deg)`
-            }}
-          >
-            <div className="hand-line1" style={{ transform: 'scaleY(2.3)' }} />
-            <div className="hand-icon1">
-              <SharkIcon />
-            </div>
-          </div>
-          <div
-            className="minute-hand absolute left-1/2 bottom-1/2 origin-bottom"
-            style={{
-              transform: `translate(-50%, 0) rotate(${minuteDegrees}deg)`
-            }}
-          >
-            <div className="hand-line1" style={{ transform: 'scaleY(4.0)' }} />
-            <div className="hand-icon2">
-              <TortoiseIcon />
-            </div>
-          </div>
-          <div
-            className="second-hand absolute left-1/2 bottom-1/2 origin-bottom"
-            style={{
-              transform: `translate(-50%, 0) rotate(${secondDegrees}deg)`
-            }}
-          >
-            <div className="hand-line2" style={{ transform: 'scaleY(5.3)' }} />
-            <div className="hand-icon3">
-              <DolphinIcon />
-            </div>
-          </div>
-        </div>
-
-        <div className="controls">
-          <div className="control-item">
-            <label htmlFor="timezone-select" className="block-label1">タイムゾーン</label>
-            <select
-              id="timezone-select"
-              value={timezone}
-              onChange={(e) => setTimezone(e.target.value)}
-              className="block1"
+            <div
+              className="minute-hand absolute left-1/2 bottom-1/2 origin-bottom"
+              style={{
+                transform: `translate(-50%, 0) rotate(${minuteDegrees}deg)`
+              }}
             >
-            <option value="Asia/Tokyo">日本 (アジア/東京)</option>
-            <option value="Asia/Taipei">台湾 (アジア/台北)</option>
-            <option value="America/New_York">ニューヨーク (アメリカ/ニューヨーク)</option>
-            <option value="Europe/London">ロンドン (ヨーロッパ/ロンドン)</option>
-            <option value="Europe/Paris">パリ (ヨーロッパ/パリ)</option>
-            <option value="America/Los_Angeles">ロサンゼルス (アメリカ/ロサンゼルス)</option>
-          </select>
-          </div>
-          
-          <div className="control-item">
-            <label htmlFor="background-select" className="block-label2">背景</label>
-          <select
-            value={currentBackground}
-            onChange={(e) => setCurrentBackground(e.target.value)}
-            className="block2"
-          >
-            <option value="bg-default">デフォルト</option>
-            <option value="bg-aquarium">水族館</option>
-            <option value="bg-beach">ビーチ</option>
-            <option value="bg-deep-sea">深海</option>
-            <option value="bg-sunset-beach">夕焼け</option>
-          </select>
-          </div>
-
-          <div className="control-item">
-            <label htmlFor="bubble-select" className="block-label3">泡の種類</label>
-          <select
-            value={currentBubbleGradation}
-            onChange={(e) => setBubbleGradation(e.target.value)}
-            className="block3"
-          >
-            <option value="default">デフォルト</option>
-            <option value="none">泡無し</option>
-            <option value="ocean-blue">海の青</option>
-            <option value="coral-reef">珊瑚礁</option>
-            <option value="deep-sea">深海</option>
-            <option value="tropical">熱帯</option>
-            </select>
+              <div className="hand-line2" style={{ transform: 'scaleY(4.0)' }} />
+              <div className="hand-icon2">
+                <EarthIcon />
+              </div>
             </div>
+            <div
+              className="second-hand absolute left-1/2 bottom-1/2 origin-bottom"
+              style={{
+                transform: `translate(-50%, 0) rotate(${secondDegrees}deg)`
+              }}
+            >
+              <div className="hand-line3" style={{ transform: 'scaleY(5.3)' }} />
+              <div className="hand-icon3">
+                <StarIcon />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+        {/* Controls */}
+        <div className="fixed right-10 top-10 space-y-8 z-50">
+      <div className="controls fixed right-10 top-10 space-y-8 z-50">
+        <div className="control-item">
+          <label htmlFor="image-select" className="block1 text-white mb-2">Image</label>
+          <select
+            id="image-select"
+            value={currentImage}
+            onChange={(e) => setCurrentImage(e.target.value)}
+            className="bg-gray-800 text-white p-2 rounded w-50 mb-10"
+          >
+            <option value="image01">Image 1</option>
+            <option value="image02">Image 2</option>
+            <option value="image03">Image 3</option>
+            <option value="image04">Image 4</option>
+            <option value="image05">Image 5</option>
+            <option value="image06">Image 6</option>
+          </select>
+        </div>
+
+        <div className="control-item">
+          <label htmlFor="timezone-select" className="block2 text-white">Timezone</label>
+          <select
+            id="timezone-select"
+            value={timezone}
+            onChange={(e) => setTimezone(e.target.value)}
+            className="bg-gray-800 text-white p-2 rounded"
+          >
+            <option value="Asia/Tokyo">Asia/Tokyo</option>
+            <option value="Asia/Taipei">Asia/Taipei</option>
+            <option value="America/New_York">America/New_York</option>
+            <option value="Europe/London">Europe/London</option>
+            <option value="Europe/Paris">Europe/Paris</option>
+            <option value="America/Los_Angeles">America/Los_Angeles</option>
+          </select>
+        </div>
+
+        <div className="control-item">
+          <label htmlFor="background-select" className="block3 text-white mb-2">Background</label>
+          <select
+            id="background-select"
+            value={currentBackground}
+            onChange={(e) => setCurrentBackground(e.target.value)}
+            className="bg-gray-800 text-white p-2 rounded"
+          >
+            <option value="space-default">Default</option>
+            <option value="space-aurora">Aurora</option>
+            <option value="space-nebula">Nebula</option>
+            <option value="space-galaxy">Galaxy</option>
+            <option value="space-sunset">Sunset</option>
+            <option value="space-deep">Deep</option>
+            <option value="space-cosmos">Galaxy2</option>
+            <option value="space-milkyway">Milkyway</option>
+            <option value="space-stardust">Star-dust</option>
+            <option value="space-supernova">Supernova</option>
+            <option value="space-animated">Animation</option>
+          </select>
+        </div>
+      </div>
+      </div>
+      </div>
+      </div>
   );
 };
 

@@ -5,7 +5,17 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        'diagonal-streak': {
+          '0%': { transform: 'translateX(0) translateY(0) rotate(-45deg)' },
+          '100%': { transform: 'translateX(100vw) translateY(100vh) rotate(-45deg)' }
+      }
+      },
+      animation: {
+        'diagonal-streak': 'diagonal-streak 3s linear'
   },
   plugins: [],
+    }
+  }
 }
