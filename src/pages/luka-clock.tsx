@@ -2,7 +2,22 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Icon from '@mdi/react';
 import { mdiRocket, mdiEarth, mdiStar } from '@mdi/js';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+
+type BackgroundStyle =
+    | 'space-default'
+    | 'space-aurora'
+    | 'space-nebula'
+    | 'space-galaxy'
+    | 'space-sunset'
+    | 'space-deep'
+    | 'space-cosmos'
+    | 'space-milkyway'
+    | 'space-stardust'
+    | 'space-supernova'
+    | 'space-animated';
+
+type BackgroundStyles = Record<BackgroundStyle, string>;
 
 interface ShootingStar {
     left: number;
@@ -27,39 +42,49 @@ interface ClockProps {
     initialTimezone?: string;
 }
 
+
 const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
-    const [mounted, setMounted] = useState(false);
-    const [time, setTime] = useState<Date | null>(null);
-    const [timezone, setTimezone] = useState(initialTimezone);
-    const [currentBackground, setCurrentBackground] = useState('space-default');
-    const [currentImage, setCurrentImage] = useState('luka01');
-    const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, size: number, delay: number }>>([]);
-    const [shootingStars, setShootingStars] = useState<ShootingStar[]>([]);
+  const [mounted, setMounted] = useState(false);
+  const [shootingStars, setShootingStars] = useState<ShootingStar[]>([]);
+  const [time, setTime] = useState<Date | null>(null);
+  const [timezone, setTimezone] = useState(initialTimezone);
+  const [currentBackground, setCurrentBackground] = useState<BackgroundStyle>('space-default');
+  const [currentImage, setCurrentImage] = useState('luka01');
+  const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, size: number, delay: number }>>([]);
 
-    const router = useRouter();
-    const handleMoonClick = () => {
-        if (router.pathname === "/luka-clock") {
-            router.push("/");
-        } else {
-            setTimezone("Asia/Tokyo");
-            setCurrentBackground("space-default");
-            console.log("Reset timezone and background to default");
-        }
-    };
+  const router = useRouter();
+  const resetToDefaults = useCallback(() => {
+    setTimezone('Asia/Tokyo');
+    setCurrentBackground('space-default');
+    setCurrentImage('luka01');
+  }, []);
 
-    const backgroundStyles = {
-        'space-default': 'bg-gradient-to-b from-black via-purple-900 to-blue-900',
-        'space-aurora': 'bg-gradient-to-b from-black via-green-900 to-blue-900',
-        'space-nebula': 'bg-gradient-to-b from-purple-900 via-pink-900 to-blue-900',
-        'space-galaxy': 'bg-gradient-to-b from-black via-blue-900 to-purple-900',
-        'space-sunset': 'bg-gradient-to-b from-black via-red-900 to-purple-900',
-        'space-deep': 'bg-gradient-to-b from-indigo-950 via-blue-950 to-purple-950',
-        'space-cosmos': 'bg-gradient-to-b from-violet-950 via-fuchsia-900 to-blue-950',
-        'space-milkyway': 'bg-gradient-to-b from-slate-950 via-indigo-900 to-violet-950',
-        'space-stardust': 'bg-gradient-to-b from-purple-950 via-pink-900 to-indigo-950',
-        'space-supernova': 'bg-gradient-to-b from-rose-950 via-orange-900 to-purple-950',
-        'space-animated': 'cosmic-gradient'
-    };
+  const handleMoonClick = useCallback(() => {
+    router.push("/");
+    resetToDefaults();
+  }, [router, resetToDefaults]);
+
+  useEffect(() => {
+    if (!mounted) {
+      setTimezone(initialTimezone);
+      setCurrentBackground('space-default');
+      setCurrentImage('luka01');
+    }
+  }, [mounted, initialTimezone]);
+
+  const backgroundStyles: BackgroundStyles = {
+    'space-default': 'bg-gradient-to-b from-black via-purple-900 to-blue-900',
+    'space-aurora': 'bg-gradient-to-b from-black via-green-900 to-blue-900',
+    'space-nebula': 'bg-gradient-to-b from-purple-900 via-pink-900 to-blue-900',
+    'space-galaxy': 'bg-gradient-to-b from-black via-blue-900 to-purple-900',
+    'space-sunset': 'bg-gradient-to-b from-black via-red-900 to-purple-900',
+    'space-deep': 'bg-gradient-to-b from-indigo-950 via-blue-950 to-purple-950',
+    'space-cosmos': 'bg-gradient-to-b from-violet-950 via-fuchsia-900 to-blue-950',
+    'space-milkyway': 'bg-gradient-to-b from-slate-950 via-indigo-900 to-violet-950',
+    'space-stardust': 'bg-gradient-to-b from-purple-950 via-pink-900 to-indigo-950',
+    'space-supernova': 'bg-gradient-to-b from-rose-950 via-orange-900 to-purple-950',
+    'space-animated': 'cosmic-gradient'
+  };
 
     const getClockStyle = useCallback(() => ({
         position: 'relative' as const,
@@ -279,7 +304,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
                             <select
                                 id="background-select"
                                 value={currentBackground}
-                                onChange={(e) => setCurrentBackground(e.target.value)}
+                                onChange={(e) => setCurrentBackground(e.target.value as BackgroundStyle)}
                                 className="bg-gray-800 text-white p-2 rounded"
                             >
                                 <option value="space-default">Default</option>

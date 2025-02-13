@@ -2,7 +2,22 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Icon from '@mdi/react';
 import { mdiRocket, mdiEarth, mdiStar } from '@mdi/js';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';  
+
+type BackgroundStyle =
+  | 'space-default'
+  | 'space-aurora'
+  | 'space-nebula'
+  | 'space-galaxy'
+  | 'space-sunset'
+  | 'space-deep'
+  | 'space-cosmos'
+  | 'space-milkyway'
+  | 'space-stardust'
+  | 'space-supernova'
+  | 'space-animated';
+
+type BackgroundStyles = Record<BackgroundStyle, string>;
 
 interface ShootingStar {
   left: number;
@@ -32,7 +47,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   const [shootingStars, setShootingStars] = useState<ShootingStar[]>([]);
   const [time, setTime] = useState<Date | null>(null);
   const [timezone, setTimezone] = useState(initialTimezone);
-  const [currentBackground, setCurrentBackground] = useState('space-default');
+  const [currentBackground, setCurrentBackground] = useState<BackgroundStyle>('space-default');
   const [currentImage, setCurrentImage] = useState('image01');
   const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, size: number, delay: number }>>([]);
 
@@ -44,11 +59,8 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   }, []);
 
   const handleMoonClick = useCallback(() => {
-    if (router.pathname === "/luka-clock") {
-      router.push("/");
-    } else {
-      resetToDefaults();
-    }
+    router.push("/");
+    resetToDefaults();
   }, [router, resetToDefaults]);
 
   useEffect(() => {
@@ -59,7 +71,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
     }
   }, [mounted, initialTimezone]);
 
-  const backgroundStyles = {
+  const backgroundStyles: BackgroundStyles = {
     'space-default': 'bg-gradient-to-b from-black via-purple-900 to-blue-900',
     'space-aurora': 'bg-gradient-to-b from-black via-green-900 to-blue-900',
     'space-nebula': 'bg-gradient-to-b from-purple-900 via-pink-900 to-blue-900',
@@ -304,7 +316,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
               <select
                 id="background-select"
                 value={currentBackground}
-                onChange={(e) => setCurrentBackground(e.target.value)}
+                onChange={(e) => setCurrentBackground(e.target.value as BackgroundStyle)}
                 className="bg-gray-800 text-white p-2 rounded"
               >
                 <option value="space-default">Default</option>
