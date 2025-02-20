@@ -72,6 +72,16 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
     }
   }, [mounted, initialTimezone]);
 
+    const formatDate = useCallback((date: Date) => {
+        const days = ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'];
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const dayOfWeek = days[date.getDay()];
+    
+        return `${year}/${month}/${day} ${dayOfWeek}`;
+    }, []);
+    
   const backgroundStyles: BackgroundStyles = {
     'space-default': 'bg-gradient-to-b from-black via-purple-900 to-blue-900',
     'space-aurora': 'bg-gradient-to-b from-black via-green-900 to-blue-900',
@@ -90,7 +100,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
         position: 'relative' as const,
         width: '500px',
         height: '500px',
-        marginTop: '10px',
+        marginTop: '-22px',
         backgroundImage: `url('/${currentImage}.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -212,6 +222,13 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
                     <div className="flex flex-col items-center justify-center p-1">
                         <div className="digital-clock text-4xl mb-8 text-white">
                             {`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}
+                        </div>
+                        
+                        <div className="date-display text-2xl mb-8 text-white font-mono" style={{
+                            textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
+                            fontFamily: 'Roboto Mono, monospace'
+                        }}>
+                            {formatDate(currentTime)}
                         </div>
 
                         <div style={getClockStyle()} className="z-20">
