@@ -1,13 +1,13 @@
 ## アプリケーション名
 <strong>夜宙ルク&ルカ世界時計</strong><br>
 
-夜宙ルクまたはルカの画像を利用した宇宙を感じる世界時計。各国の現在時刻をすぐに知ることが出来、背景のグラデーション効果に加え、ルク様またはルカの画像による癒しの効果をあなたに与えます🚀🌟。
+夜宙ルクまたはルカの画像を利用した宇宙を感じる世界時計。各国の現在時刻に加え、曜日年月日をすぐに知ることが出来ます。背景のグラデーション効果に加え、ルク様またはルカの画像による癒しの効果をあなたに与えます🚀🌟。
 
-<strong>ホーム画面(店舗一覧)</strong>
-![ホーム画面](https://github.com/user-attachments/assets/195f0031-f75c-4d82-b3e7-0d97d828a67d)
+<strong>ルク様画面</strong>
+![ルク様](https://github.com/user-attachments/assets/86274d4c-66a6-42c2-9d14-f603a1da064c)
 
-<strong>メニュー画面1</strong>
-![メニュー画面1](https://github.com/user-attachments/assets/3bdbcdef-d6d6-439e-89ac-015351422ca1)
+<strong>ルカ画面1</strong>
+![ルカ](https://github.com/user-attachments/assets/3228382d-aeff-499b-acdb-2ad58cf2e097)
 
 <strong>-基本機能(上部に添付した画面の説明)-</strong>
 
@@ -16,15 +16,15 @@
 ・<strong>ルカモード</strong>：画面左上のアイコン(ハンバーガーメニュー)をクリックするとメニュー画面が表示され、表示された×ボタンをクリックするとメニューを閉じることが出来ます。上から順にHomeをクリックするとホーム画面が表示され、Registrationをクリックすると会員登録画面、Loginをクリックするとログイン画面が表示されます。<br>
 
 ## アプリケーションURL
-http://localhost:3000 (メイン(ルク様モード))<br>
-http://localhost/login (ログインページ)<br>
+https://luk-luka-clock.vercel.app/ (メイン(ルク様画面))<br>
+https://luk-luka-clock.vercel.app/luka-clock (ルカ画面)<br>
 
 ## 機能一覧
-1.日本を含む各国の時刻を表示(追加予定)<br>
+1.日本を含む各国の時刻・曜日年月日の表示<br>
 2.夜宙ルクまたはルカのイメージ変更機能<br>
 3.背景色の変更機能<br>
-4.リセット機能(未完成)<br>
-5.ルカモード変更機能(未完成)<br>
+4.リセット機能<br>
+5.ルカモード変更機能<br>
 
 
 ## 使用技術(実行環境)
@@ -32,4 +32,4 @@ http://localhost/login (ログインページ)<br>
 - TypeScript<br>
 
 ## その他
-随時更新予定。左側の地球アイコンをクリックするとルカモードに変更する機能、月をクリックすると設定がリセット(メインページに戻る)機能を追加予定。
+随時更新予定。アラーム機能とか作るかも？
