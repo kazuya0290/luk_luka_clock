@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback } from 'react';
 import Icon from '@mdi/react';
-import { mdiRocket, mdiEarth, mdiStar } from '@mdi/js';
+import { mdiRocket, mdiEarth, mdiHeart } from '@mdi/js';
 import { useRouter } from 'next/navigation';
 
 type BackgroundStyle =
@@ -34,8 +34,8 @@ const EarthIcon = () => (
     <Icon path={mdiEarth} size={1} />
 );
 
-const StarIcon = () => (
-    <Icon path={mdiStar} size={1} />
+const HeartIcon = () => (
+    <Icon path={mdiHeart} size={1} />
 );
 
 interface ClockProps {
@@ -275,7 +275,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
                                 >
                                     <div className="hand-line3" style={{ transform: 'scaleY(5.3)' }} />
                                     <div className="hand-icon3">
-                                        <StarIcon />
+                                        <HeartIcon />
                                     </div>
                                 </div>
                             </div>
