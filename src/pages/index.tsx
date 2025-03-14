@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Icon from '@mdi/react';
 import { mdiRocket, mdiEarth, mdiStar } from '@mdi/js';
-import { useRouter } from 'next/navigation';  
+import { useRouter } from 'next/navigation';
 
 type BackgroundStyle =
   | 'space-default'
@@ -232,7 +232,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
             <div className="digital-clock text-4xl mb-8 text-white">
               {`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}
             </div>
-            
+
             <div className="date-display text-2xl mb-8 text-white font-mono" style={{
               textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
               fontFamily: 'Roboto Mono, monospace'
@@ -306,8 +306,6 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
                 <option value="image02">Image 2</option>
                 <option value="image03">Image 3</option>
                 <option value="image04">Image 4</option>
-                <option value="image05">Image 5</option>
-                <option value="image06">Image 6</option>
               </select>
             </div>
 

@@ -44,33 +44,33 @@ interface ClockProps {
 
 
 const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
-  const [mounted, setMounted] = useState(false);
-  const [shootingStars, setShootingStars] = useState<ShootingStar[]>([]);
-  const [time, setTime] = useState<Date | null>(null);
-  const [timezone, setTimezone] = useState(initialTimezone);
-  const [currentBackground, setCurrentBackground] = useState<BackgroundStyle>('space-default');
-  const [currentImage, setCurrentImage] = useState('luka01');
-  const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, size: number, delay: number }>>([]);
+    const [mounted, setMounted] = useState(false);
+    const [shootingStars, setShootingStars] = useState<ShootingStar[]>([]);
+    const [time, setTime] = useState<Date | null>(null);
+    const [timezone, setTimezone] = useState(initialTimezone);
+    const [currentBackground, setCurrentBackground] = useState<BackgroundStyle>('space-default');
+    const [currentImage, setCurrentImage] = useState('luka01');
+    const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, size: number, delay: number }>>([]);
 
-  const router = useRouter();
-  const resetToDefaults = useCallback(() => {
-    setTimezone('Asia/Tokyo');
-    setCurrentBackground('space-default');
-    setCurrentImage('luka01');
-  }, []);
+    const router = useRouter();
+    const resetToDefaults = useCallback(() => {
+        setTimezone('Asia/Tokyo');
+        setCurrentBackground('space-default');
+        setCurrentImage('luka01');
+    }, []);
 
-  const handleMoonClick = useCallback(() => {
-    router.push("/");
-    resetToDefaults();
-  }, [router, resetToDefaults]);
+    const handleMoonClick = useCallback(() => {
+        router.push("/");
+        resetToDefaults();
+    }, [router, resetToDefaults]);
 
-  useEffect(() => {
-    if (!mounted) {
-      setTimezone(initialTimezone);
-      setCurrentBackground('space-default');
-      setCurrentImage('luka01');
-    }
-  }, [mounted, initialTimezone]);
+    useEffect(() => {
+        if (!mounted) {
+            setTimezone(initialTimezone);
+            setCurrentBackground('space-default');
+            setCurrentImage('luka01');
+        }
+    }, [mounted, initialTimezone]);
 
     const formatDate = useCallback((date: Date) => {
         const days = ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'];
@@ -78,23 +78,23 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         const dayOfWeek = days[date.getDay()];
-    
+
         return `${year}/${month}/${day} ${dayOfWeek}`;
     }, []);
-    
-  const backgroundStyles: BackgroundStyles = {
-    'space-default': 'bg-gradient-to-b from-black via-purple-900 to-blue-900',
-    'space-aurora': 'bg-gradient-to-b from-black via-green-900 to-blue-900',
-    'space-nebula': 'bg-gradient-to-b from-purple-900 via-pink-900 to-blue-900',
-    'space-galaxy': 'bg-gradient-to-b from-black via-blue-900 to-purple-900',
-    'space-sunset': 'bg-gradient-to-b from-black via-red-900 to-purple-900',
-    'space-deep': 'bg-gradient-to-b from-indigo-950 via-blue-950 to-purple-950',
-    'space-cosmos': 'bg-gradient-to-b from-violet-950 via-fuchsia-900 to-blue-950',
-    'space-milkyway': 'bg-gradient-to-b from-slate-950 via-indigo-900 to-violet-950',
-    'space-stardust': 'bg-gradient-to-b from-purple-950 via-pink-900 to-indigo-950',
-    'space-supernova': 'bg-gradient-to-b from-rose-950 via-orange-900 to-purple-950',
-    'space-animated': 'cosmic-gradient'
-  };
+
+    const backgroundStyles: BackgroundStyles = {
+        'space-default': 'bg-gradient-to-b from-black via-purple-900 to-blue-900',
+        'space-aurora': 'bg-gradient-to-b from-black via-green-900 to-blue-900',
+        'space-nebula': 'bg-gradient-to-b from-purple-900 via-pink-900 to-blue-900',
+        'space-galaxy': 'bg-gradient-to-b from-black via-blue-900 to-purple-900',
+        'space-sunset': 'bg-gradient-to-b from-black via-red-900 to-purple-900',
+        'space-deep': 'bg-gradient-to-b from-indigo-950 via-blue-950 to-purple-950',
+        'space-cosmos': 'bg-gradient-to-b from-violet-950 via-fuchsia-900 to-blue-950',
+        'space-milkyway': 'bg-gradient-to-b from-slate-950 via-indigo-900 to-violet-950',
+        'space-stardust': 'bg-gradient-to-b from-purple-950 via-pink-900 to-indigo-950',
+        'space-supernova': 'bg-gradient-to-b from-rose-950 via-orange-900 to-purple-950',
+        'space-animated': 'cosmic-gradient'
+    };
 
     const getClockStyle = useCallback(() => ({
         position: 'relative' as const,
@@ -223,7 +223,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
                         <div className="digital-clock text-4xl mb-8 text-white">
                             {`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}
                         </div>
-                        
+
                         <div className="date-display text-2xl mb-8 text-white font-mono" style={{
                             textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
                             fontFamily: 'Roboto Mono, monospace'
