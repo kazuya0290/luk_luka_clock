@@ -27,11 +27,11 @@ body {
     display: flex;
         flex-direction: column;
         gap: 16px;
-        /* 各項目間の間隔を設定 */
+        
         max-width: 300px;
-        /* 必要なら横幅を制限 */
+        
         margin: 0 auto;
-        /* 中央揃え */
+       
 }
 
 .background-container {
@@ -59,7 +59,7 @@ body {
     animation: gradientAnimation 15s ease infinite;
 }
 
-/* hue-rotateアニメーションを背景用の新しい要素に適用 */
+
 .cosmic-overlay {
     position: absolute;
     top: 0;
@@ -70,7 +70,7 @@ body {
     pointer-events: none;
 }
 
-/* 時計のコンテナを独立させる */
+
 .clock-container {
     position: relative;
     z-index: 1;
@@ -91,17 +91,17 @@ body {
 
 #image-select {
     margin-top: 130px;
-    /* 画像セレクトボックスを少し下げる */
+   
 }
 
 #timezone-select {
     margin-top: 210px;
-    /* タイムゾーンセレクトボックスをさらに下げる */
+    
 }
 
 #background-select {
     margin-top: 290px;
-    /* 背景セレクトボックスをさらに下げる */
+    
 }
 
 @keyframes cosmic-shift {
@@ -377,7 +377,7 @@ body {
 
 }
 
-/* アイコンサイズの個別調整 */
+
 .hour-hand .hand-icon svg {
     width: 24px;
     height: 24px;
@@ -414,7 +414,7 @@ select {
     transform: translateY(-50%);
 }
 
-/* 既存のコントロールコンテナのスタイルを削除 */
+
 .controls {
     position: fixed;
     right: 40px;
@@ -429,14 +429,13 @@ select {
     flex-direction: column;
 }
 
-/* ラベルの共通設定 */
+
 .block1 {
     font-weight: bold;
     margin-top: 150px;
     margin-left:-170px;
     display:block;
     position:absolute;
-    /* ラベルをブロック要素にして縦に並べる */
 }
 
 .block2 {
@@ -445,7 +444,6 @@ select {
     margin-left: -160px;
     display:block;
     position:absolute;
-    /* ラベルをブロック要素にして縦に並べる */
 }
 
 .block3 {
@@ -453,7 +451,6 @@ select {
     margin-top: 210px;
     margin-left: -170px;
     position:absolute;
-    /* ラベルをブロック要素にして縦に並べる */
 }
 
 @keyframes twinkle {
@@ -490,23 +487,20 @@ select {
     animation: glow 4s infinite ease-in-out;
 }
 
-/* タブレット・スマホ用のレスポンシブデザイン */
 @media (max-width: 768px) {
 
-    /* 時計のサイズ調整 */
+    
     .clock {
         width: 300px;
         height: 300px;
         margin-top: 40px;
     }
 
-    /* デジタル時計のサイズと位置調整 */
     .digital-clock {
         font-size: 1.5rem;
         margin-top: -120px;
     }
 
-    /* コントロールパネルの位置調整 */
     .controls {
         position: relative;
         right: auto;
@@ -514,12 +508,10 @@ select {
         padding: 0 20px;
     }
 
-    /* 時計の文字盤の数字サイズ調整 */
     .number {
         font-size: 1rem;
     }
 
-    /* アイコンサイズの調整 */
     .hand-icon1,
     .hand-icon2,
     .hand-icon3 {
@@ -534,7 +526,6 @@ select {
         height: 16px;
     }
 
-    /* 針の長さ調整 */
     .hand-line1 {
         transform: scaleY(1.8) !important;
     }
@@ -547,7 +538,6 @@ select {
         transform: scaleY(4.0) !important;
     }
 
-    /* セレクトボックスのスタイル調整 */
     select {
         width: 100%;
         max-width: 280px;
@@ -561,13 +551,11 @@ select {
         text-align: center;
     }
 
-    /* コントロール項目のスペーシング */
     .control-item {
         margin-bottom: 20px;
     }
 }
 
-/* より小さい画面サイズ用の追加調整 */
 @media (max-width: 480px) {
     .clock {
         width: 250px;
@@ -579,12 +567,10 @@ select {
         margin-top: -100px;
     }
 
-    /* 文字盤の数字をさらに小さく */
     .number {
         font-size: 0.875rem;
     }
 
-    /* アイコンをさらに小さく */
     .hand-icon1,
     .hand-icon2,
     .hand-icon3 {
@@ -600,7 +586,6 @@ select {
     }
 }
 
-/* 星のアニメーションの位置調整 */
 @media (max-width: 768px) {
     .animate-twinkle {
         transform-origin: center;
@@ -612,7 +597,6 @@ select {
     }
 }
 
-/* 全体のレイアウト調整 */
 @media (max-width: 768px) {
     .min-h-screen {
         padding: 20px;
