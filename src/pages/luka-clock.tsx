@@ -26,6 +26,20 @@ interface ShootingStar {
     speed: number;
 }
 
+interface AquariusStar {
+    x: number;
+    y: number;
+    size: number;
+    brightness: number;
+}
+
+interface AquariusLine {
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+}
+
 const RocketIcon = () => (
     <Icon path={mdiRocket} size={1} />
 );
@@ -51,6 +65,37 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
     const [currentBackground, setCurrentBackground] = useState<BackgroundStyle>('space-default');
     const [currentImage, setCurrentImage] = useState('luka01');
     const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, size: number, delay: number }>>([]);
+
+   
+    const aquariusStars: AquariusStar[] = [
+       
+        { x: 71, y: 7.5, size: 8, brightness: 0.9 }, 
+        { x: 68.2, y: 10.5, size: 8, brightness: 0.9 },
+        { x: 80, y: 15, size: 8, brightness: 0.9 },
+        { x: 71.1, y: 15, size: 8, brightness: 0.9 },
+        { x: 75, y: 22, size: 8, brightness: 0.9 },
+        { x: 66.9, y: 7.5, size: 8, brightness: 0.9 }, 
+        { x: 65.2, y: 10.5, size: 8, brightness: 0.9 },
+        { x: 63.2, y: 15.5, size: 8, brightness: 0.9 },
+        { x: 65.2, y: 14.5, size: 8, brightness: 0.9 },
+        { x: 67.2, y: 16.5, size: 8, brightness: 0.9 },
+        { x: 66.2, y: 25.5, size: 8, brightness: 0.9 },
+    ];
+
+   
+    const aquariusLines: AquariusLine[] = [
+        
+        { x1: 69, y1: 11, x2: 71.5, y2: 8 },
+        { x1: 80, y1: 15, x2: 71.5, y2: 8 },
+        { x1: 71.4, y1: 16, x2: 71.4, y2: 8 },
+        { x1: 75, y1: 22, x2: 71.4, y2: 16 },
+        { x1: 67, y1: 8, x2: 68.8, y2: 11.9 },
+        { x1: 67, y1: 8, x2: 65.2, y2: 12 },
+        { x1: 66, y1: 10.2, x2: 63.2, y2: 16.4 },
+        { x1: 63.2, y1: 16.2, x2: 65.2, y2: 15.4 },
+        { x1: 65.4, y1: 14.5, x2: 67.2, y2: 17.1 },
+        { x1: 66.5, y1: 25.5, x2: 67.5, y2: 16.5 },
+    ];
 
     const router = useRouter();
     const resetToDefaults = useCallback(() => {
@@ -197,6 +242,41 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
                     />
                 ))}
 
+                {/* 水瓶座の星座 - 線 */}
+                <div className="absolute inset-0 pointer-events-none">
+                    <svg width="100%" height="100%" style={{ position: 'absolute' }}>
+                        {aquariusLines.map((line, index) => (
+                            <line
+                                key={`aquarius-line-${index}`}
+                                x1={`${line.x1}%`}
+                                y1={`${line.y1}%`}
+                                x2={`${line.x2}%`}
+                                y2={`${line.y2}%`}
+                                stroke="rgba(255, 255, 255, 0.4)"
+                                strokeWidth="1"
+                                strokeDasharray="3,2"
+                            />
+                        ))}
+                    </svg>
+                </div>
+
+               
+                {aquariusStars.map((star, index) => (
+                    <div
+                        key={`aquarius-star-${index}`}
+                        className="absolute rounded-full bg-white animate-pulse"
+                        style={{
+                            left: `${star.x}%`,
+                            top: `${star.y}%`,
+                            width: `${star.size}px`,
+                            height: `${star.size}px`,
+                            opacity: star.brightness,
+                            boxShadow: `0 0 ${star.size * 3}px ${star.size}px rgba(255, 255, 255, 0.9)`,
+                            animationDuration: `${3 + Math.random() * 2}s`
+                        }}
+                    />
+                ))}
+
                 {shootingStars.map((star) => (
                     <div
                         key={star.key}
@@ -214,6 +294,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
                 <div
                     className="absolute right-10 top-10 w-32 h-32 rounded-full bg-gradient-to-br from-gray-200 to-gray-400 animate-glow cursor-pointer z-50"
                     onClick={handleMoonClick}
+                    title="戻る"
                 >
                     <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent to-gray-900 opacity-20" />
                 </div>

@@ -26,6 +26,20 @@ interface ShootingStar {
   speed: number;
 }
 
+interface VirgoStar {
+  x: number;
+  y: number;
+  size: number;
+  brightness: number;
+}
+
+interface VirgoLine {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
+
 const RocketIcon = () => (
   <Icon path={mdiRocket} size={1} />
 );
@@ -50,6 +64,46 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   const [currentBackground, setCurrentBackground] = useState<BackgroundStyle>('space-default');
   const [currentImage, setCurrentImage] = useState('image01');
   const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, size: number, delay: number }>>([]);
+
+
+  const virgoStars: VirgoStar[] = [
+    { x: 74.5, y: 19.1, size: 8, brightness: 0.9 },
+    { x: 72, y: 15, size: 8, brightness: 0.7 },
+    { x: 69, y: 10, size: 8, brightness: 0.8 },
+    { x: 67.2, y: 7, size: 8, brightness: 0.7 },
+    { x: 65.1, y: 5, size: 8, brightness: 0.8 },
+    { x: 61.6, y: 8.8, size: 8, brightness: 0.8 },
+    { x: 60, y: 15, size: 8, brightness: 0.7 },
+    { x: 63, y: 18, size: 8, brightness: 0.8 },
+    { x: 64, y: 22, size: 8, brightness: 0.7 },
+    { x: 70, y: 22.5, size: 8, brightness: 0.8 },
+    { x: 73, y: 26.5, size: 8, brightness: 0.7 },
+    { x: 74.1, y: 29, size: 8, brightness: 0.7 },
+    { x: 74.8, y: 38, size: 8, brightness: 0.7 },
+    { x: 66.5, y: 1, size: 8, brightness: 0.7 },
+    { x: 76.5, y: 19.1, size: 8, brightness: 0.9 },
+    { x: 79.5, y: 30.5, size: 8, brightness: 0.9 },
+  ];
+
+  const virgoLines: VirgoLine[] = [
+    { x1: 75, y1: 20, x2: 72, y2: 15 },
+    { x1: 72, y1: 15, x2: 69, y2: 10 },
+    { x1: 69, y1: 10, x2: 67, y2: 7 },
+    { x1: 67, y1: 7, x2: 65, y2: 5 },
+    { x1: 65, y1: 5, x2: 63, y2: 8 },
+    { x1: 63, y1: 8, x2: 61, y2: 11 },
+    { x1: 61, y1: 11, x2: 60, y2: 15 },
+    { x1: 60, y1: 15, x2: 63, y2: 18 },
+    { x1: 63, y1: 18, x2: 64, y2: 22 },
+    { x1: 62, y1: 10, x2: 70, y2: 23 },
+    { x1: 70, y1: 23, x2: 73, y2: 27 },
+    { x1: 73, y1: 27, x2: 75, y2: 20 },
+    { x1: 74.1, y1: 29, x2: 66.5, y2: 17.5 },
+    { x1: 75, y1: 38, x2: 74.5, y2: 29 },
+    { x1: 67, y1: 1, x2: 65.5, y2: 5 },
+    { x1: 76.5, y1: 19.5, x2: 75, y2: 19.5 },
+    { x1: 79.5, y1: 30.5, x2: 76.9, y2: 19.5 },
+  ];
 
   const router = useRouter();
   const resetToDefaults = useCallback(() => {
@@ -181,6 +235,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
           {currentBackground === 'space-animated' && <div className="cosmic-overlay" />}
         </div>
 
+        {/* 通常の星 */}
         {starPositions.map((star, index) => (
           <div
             key={index}
@@ -192,6 +247,41 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
               height: `${star.size}px`,
               animationDelay: `${star.delay}s`,
               boxShadow: `0 0 ${star.size * 2}px ${star.size}px rgba(255, 255, 255, 0.7)`
+            }}
+          />
+        ))}
+
+        {/* 乙女座の星座 - 線 */}
+        <div className="absolute inset-0 pointer-events-none">
+          <svg width="100%" height="100%" style={{ position: 'absolute' }}>
+            {virgoLines.map((line, index) => (
+              <line
+                key={`line-${index}`}
+                x1={`${line.x1}%`}
+                y1={`${line.y1}%`}
+                x2={`${line.x2}%`}
+                y2={`${line.y2}%`}
+                stroke="rgba(255, 255, 255, 0.4)"
+                strokeWidth="1"
+                strokeDasharray="3,2"
+              />
+            ))}
+          </svg>
+        </div>
+
+        {/* 乙女座の星座 - 星 */}
+        {virgoStars.map((star, index) => (
+          <div
+            key={`virgo-star-${index}`}
+            className="absolute rounded-full bg-white animate-pulse"
+            style={{
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              opacity: star.brightness,
+              boxShadow: `0 0 ${star.size * 3}px ${star.size}px rgba(255, 255, 255, 0.9)`,
+              animationDuration: `${3 + Math.random() * 2}s`
             }}
           />
         ))}
@@ -213,7 +303,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
         <div
           className="absolute right-10 top-10 w-32 h-32 rounded-full bg-gradient-to-br from-gray-200 to-gray-400 animate-glow cursor-pointer z-50"
           onClick={handleMoonClick}
-          title="Reset to defaults"
+          title="設定リセット"
         >
           <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent to-gray-900 opacity-20" />
         </div>
@@ -223,6 +313,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
           onClick={() => {
             router.push("/luka-clock");
           }}
+          title="ルカ(国内時計モード)"
         >
           <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent to-gray-900 opacity-20" />
         </div>
