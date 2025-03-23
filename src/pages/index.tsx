@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect, useCallback } from 'react';
 import Icon from '@mdi/react';
-import { mdiRocket, mdiEarth, mdiStar } from '@mdi/js';
+import { mdiRocket, mdiEarth, mdiStar, mdiWeatherSunny, mdiWeatherRainy, mdiWeatherSnowy, mdiWeatherCloudy, mdiWeatherPartlyCloudy, mdiWeatherLightning } from '@mdi/js';
 import { useRouter } from 'next/navigation';
+
 
 type BackgroundStyle =
   | 'space-default'
@@ -40,6 +41,13 @@ interface VirgoLine {
   y2: number;
 }
 
+interface WeatherData {
+  temp: number;
+  condition: string;
+  icon: string;
+  cityName: string;
+}
+
 const RocketIcon = () => (
   <Icon path={mdiRocket} size={1} />
 );
@@ -51,6 +59,37 @@ const EarthIcon = () => (
 const StarIcon = () => (
   <Icon path={mdiStar} size={1} />
 );
+
+
+const timezoneToCityMap: Record<string, { lat: number; lon: number; name: string }> = {
+  'Asia/Tokyo': { lat: 35.6895, lon: 139.6917, name: 'Tokyo' },
+  'Asia/Taipei': { lat: 25.0330, lon: 121.5654, name: 'Taipei' },
+  'America/New_York': { lat: 40.7128, lon: -74.0060, name: 'New York' },
+  'Europe/London': { lat: 51.5074, lon: -0.1278, name: 'London' },
+  'Europe/Paris': { lat: 48.8566, lon: 2.3522, name: 'Paris' },
+  'America/Los_Angeles': { lat: 34.0522, lon: -118.2437, name: 'Los Angeles' },
+};
+
+
+const getWeatherIcon = (condition: string) => {
+  const lowerCondition = condition.toLowerCase();
+
+  if (lowerCondition.includes('clear')) {
+    return mdiWeatherSunny;
+  } else if (lowerCondition.includes('cloud')) {
+    return mdiWeatherCloudy;
+  } else if (lowerCondition.includes('rain') || lowerCondition.includes('drizzle')) {
+    return mdiWeatherRainy;
+  } else if (lowerCondition.includes('snow')) {
+    return mdiWeatherSnowy;
+  } else if (lowerCondition.includes('thunder')) {
+    return mdiWeatherLightning;
+  } else if (lowerCondition.includes('mist') || lowerCondition.includes('fog')) {
+    return mdiWeatherPartlyCloudy;
+  } else {
+    return mdiWeatherSunny;
+  }
+};
 
 interface ClockProps {
   initialTimezone?: string;
@@ -64,6 +103,9 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   const [currentBackground, setCurrentBackground] = useState<BackgroundStyle>('space-default');
   const [currentImage, setCurrentImage] = useState('image01');
   const [starPositions, setStarPositions] = useState<Array<{ left: number, top: number, size: number, delay: number }>>([]);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [isLoadingWeather, setIsLoadingWeather] = useState(false);
+  
 
 
   const virgoStars: VirgoStar[] = [
@@ -117,6 +159,41 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
     resetToDefaults();
   }, [router, resetToDefaults]);
 
+ 
+  const fetchWeatherData = useCallback(async () => {
+    if (!timezone || !timezoneToCityMap[timezone]) return;
+
+    setIsLoadingWeather(true);
+    
+
+    const { lat, lon, name } = timezoneToCityMap[timezone];
+    const apiKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
+
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+      );
+
+      if (!response.ok) {
+        throw new Error('Weather data fetch failed');
+      }
+
+      const data = await response.json();
+
+      setWeatherData({
+        temp: data.main.temp,
+        condition: data.weather[0].main,
+        icon: data.weather[0].icon,
+        cityName: name
+      });
+    } catch (error) {
+      console.error('Error fetching weather:', error);
+      
+    } finally {
+      setIsLoadingWeather(false);
+    }
+  }, [timezone]);
+
   useEffect(() => {
     if (!mounted) {
       setTimezone(initialTimezone);
@@ -124,6 +201,13 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
       setCurrentImage('image01');
     }
   }, [mounted, initialTimezone]);
+
+  
+  useEffect(() => {
+    if (mounted) {
+      fetchWeatherData();
+    }
+  }, [mounted, timezone, fetchWeatherData]);
 
   const formatDate = useCallback((date: Date) => {
     const days = ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'];
@@ -227,6 +311,13 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
   const minuteDegrees = ((minutes / 60) * 360) + ((seconds / 60) * 6);
   const hourDegrees = ((hours % 12) / 12) * 360 + ((minutes / 60) * 30);
 
+  
+  const WeatherIcon = () => {
+    if (!weatherData) return null;
+    const iconPath = getWeatherIcon(weatherData.condition);
+    return <Icon path={iconPath} size={1.5} color="white" />;
+  };
+
   return (
     <div className={`relative min-h-screen ${backgroundStyles[currentBackground]} overflow-hidden`}>
       <div className="fixed inset-0">
@@ -235,7 +326,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
           {currentBackground === 'space-animated' && <div className="cosmic-overlay" />}
         </div>
 
-        {/* 通常の星 */}
+       
         {starPositions.map((star, index) => (
           <div
             key={index}
@@ -251,7 +342,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
           />
         ))}
 
-        {/* 乙女座の星座 - 線 */}
+       
         <div className="absolute inset-0 pointer-events-none">
           <svg width="100%" height="100%" style={{ position: 'absolute' }}>
             {virgoLines.map((line, index) => (
@@ -269,7 +360,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
           </svg>
         </div>
 
-        {/* 乙女座の星座 - 星 */}
+        
         {virgoStars.map((star, index) => (
           <div
             key={`virgo-star-${index}`}
@@ -324,12 +415,36 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
               {`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}
             </div>
 
-            <div className="date-display text-2xl mb-8 text-white font-mono" style={{
-              textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
-              fontFamily: 'Roboto Mono, monospace'
-            }}>
-              {formatDate(currentTime)}
+            <div className="flex items-center justify-center mb-4">
+             
+              {weatherData && (
+                <div className="weather-display flex items-center mr-7 bg-black bg-opacity-30 p-2 rounded-lg">
+                  <div className="weather-icon1 mr-4 mt-[-10px]">
+                    <WeatherIcon />
+                  </div>
+                  <div className="weather-temp text-white text-xl mt-[-10px]">
+                    {Math.round(weatherData.temp)}°C
+                  </div>
+                </div>
+              )}
+
+              
+              {isLoadingWeather && (
+                <div className="weather-loading mr-4 text-white text-xl">
+                  Loading...
+                </div>
+              )}
+
+              
+              <div className="date-display text-2xl text-white font-mono mt-[-10px]" style={{
+                textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
+                fontFamily: 'Roboto Mono, monospace'
+              }}>
+                {formatDate(currentTime)}
+              </div>
             </div>
+
+            
 
             <div style={getClockStyle()} className="z-20">
               <div className="clock-face">
@@ -385,10 +500,10 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
 
         <div className="fixed right-10 top-10 space-y-8 z-50">
           <div className="controls fixed right-10 top-10 space-y-8 z-50">
-            <div className="control-item">
-              <label htmlFor="image-select" className="block1 text-white mb-2">Image</label>
+            <div className="control-item1">
+              <label htmlFor="image-select1" className="block1 text-white mb-2">Image</label>
               <select
-                id="image-select"
+                id="image-select1"
                 value={currentImage}
                 onChange={(e) => setCurrentImage(e.target.value)}
                 className="bg-gray-800 text-white p-2 rounded w-50 mb-10"
@@ -400,7 +515,7 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
               </select>
             </div>
 
-            <div className="control-item">
+            <div className="control-item1">
               <label htmlFor="timezone-select" className="block2 text-white">Timezone</label>
               <select
                 id="timezone-select"
@@ -417,10 +532,10 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
               </select>
             </div>
 
-            <div className="control-item">
-              <label htmlFor="background-select" className="block3 text-white mb-2">Background</label>
+            <div className="control-item1">
+              <label htmlFor="background-select1" className="block3 text-white mb-2">Background</label>
               <select
-                id="background-select"
+                id="background-select1"
                 value={currentBackground}
                 onChange={(e) => setCurrentBackground(e.target.value as BackgroundStyle)}
                 className="bg-gray-800 text-white p-2 rounded"
@@ -438,6 +553,8 @@ const Clock: React.FC<ClockProps> = ({ initialTimezone = 'Asia/Tokyo' }) => {
                 <option value="space-animated">Animation</option>
               </select>
             </div>
+
+           
           </div>
         </div>
       </div>

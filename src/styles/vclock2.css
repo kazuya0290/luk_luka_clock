@@ -22,18 +22,6 @@ body {
     bottom: 0;
 }
 
-.controls {
-    margin-left:500px;
-    display: flex;
-        flex-direction: column;
-        gap: 16px;
-        
-        max-width: 300px;
-        
-        margin: 0 auto;
-       
-}
-
 .background-container {
     position: fixed;
     top: 0;
@@ -48,13 +36,13 @@ body {
     width: 100%;
     height: 100%;
     background: linear-gradient(45deg,
-                #000000,
-                #1a237e,
-                #311b92,
-                #4a148c,
-                #311b92,
-                #1a237e,
-                #000000);
+            #000000,
+            #1a237e,
+            #311b92,
+            #4a148c,
+            #311b92,
+            #1a237e,
+            #000000);
     background-size: 400% 400%;
     animation: gradientAnimation 15s ease infinite;
 }
@@ -89,19 +77,14 @@ body {
     align-items: center;
 }
 
-#image-select1 {
-    margin-top: 130px;
-   
-}
-
-#timezone-select {
-    margin-top: 210px;
-    
-}
-
-#background-select1 {
-    margin-top: 290px;
-    
+#image-select2,
+#region-select,
+#background-select2 {
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 @keyframes cosmic-shift {
@@ -279,6 +262,7 @@ body {
     width: 4px;
     transform-origin: bottom;
 }
+
 .minute-hand,
 .second-hand {
     position: absolute;
@@ -319,7 +303,7 @@ body {
     width: 24px;
     height: 60px;
     display: flex;
-    color:crimson;
+    color: crimson;
     justify-content: center;
     align-items: center;
 }
@@ -332,7 +316,7 @@ body {
     width: 24px;
     height: 120px;
     display: flex;
-    color:blue;
+    color: blue;
     justify-content: center;
     align-items: center;
 }
@@ -345,7 +329,7 @@ body {
     width: 24px;
     height: 160px;
     display: flex;
-    color:#FFEE58;
+    color: #FFEE58;
     justify-content: center;
     align-items: center;
 }
@@ -415,47 +399,48 @@ select {
 }
 
 
-.controls {
+.controls-2 {
     position: fixed;
-    right: 40px;
+    right: 20px;
+    top: 250px;
+    z-index: 50;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    z-index: 100;
+    width: 200px;
 }
 
-.control-item1 {
+.control-item2 {
     display: flex;
     flex-direction: column;
+    margin-bottom: 15px;
+    position: relative;
+    width: 100%;
 }
 
 
-.block1 {
+
+.block4,
+.block5,
+.block6 {
     font-weight: bold;
-    margin-top: 150px;
-    margin-left:-143px;
-    display:block;
-    position:absolute;
+    color: white;
+    margin-bottom: 40px;
+    position: relative;
+    margin-left: 30px;
+    margin-top: -20px;
 }
 
-.block2 {
-    font-weight: bold;
-    margin-top: 180px;
-    margin-left: -160px;
-    display:block;
-    position:absolute;
+.weather-icon2 {
+    top: 50px;
+    margin-left: -220px;
+    position: absolute;
 }
 
-.block3 {
-    font-weight: bold;
-    margin-top: 210px;
-    margin-left: -170px;
-    position:absolute;
-}
-
-.weather-icon {
-    margin-top: -14px;
-    left: 510px;
+.weather-info {
+    margin-top: -95px;
+    left: 500px;
+    position: absolute;
 }
 
 @keyframes twinkle {
@@ -494,7 +479,7 @@ select {
 
 @media (max-width: 768px) {
 
-    
+
     .clock {
         width: 300px;
         height: 300px;
@@ -504,13 +489,6 @@ select {
     .digital-clock {
         font-size: 1.5rem;
         margin-top: -120px;
-    }
-
-    .controls {
-        position: relative;
-        right: auto;
-        margin-top: 30px;
-        padding: 0 20px;
     }
 
     .number {
@@ -549,14 +527,14 @@ select {
         margin: 0 auto;
     }
 
-    .block1,
-    .block2 {
+    .block4,
+    .block5 {
         margin: 0;
         padding: 10px 0;
         text-align: center;
     }
 
-    .control-item1 {
+    .control-item2 {
         margin-bottom: 20px;
     }
 }
