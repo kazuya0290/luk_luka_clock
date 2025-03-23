@@ -147,10 +147,9 @@ const Clock: React.FC<ClockProps> = ({ initialRegion = '関東' }) => {
     }, []);
 
     const handleMoonClick = useCallback(() => {
-        router.push("/");
         resetToDefaults();
-    }, [router, resetToDefaults]);
-
+        
+    }, [resetToDefaults]);
     useEffect(() => {
         if (!mounted) {
             setSelectedRegion(initialRegion);
@@ -382,6 +381,16 @@ const Clock: React.FC<ClockProps> = ({ initialRegion = '関東' }) => {
                 <div
                     className="absolute right-10 top-10 w-32 h-32 rounded-full bg-gradient-to-br from-gray-200 to-gray-400 animate-glow cursor-pointer z-50"
                     onClick={handleMoonClick}
+                    title="設定リセット"
+                >
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent to-gray-900 opacity-20" />
+                </div>
+
+                <div
+                    className="absolute left-10 top-10 w-32 h-32 rounded-full bg-gradient-to-br from-blue-200 to-blue-400 animate-glow cursor-pointer z-50"
+                    onClick={() => {
+                        router.push("/");
+                    }}
                     title="戻る"
                 >
                     <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent to-gray-900 opacity-20" />
