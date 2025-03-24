@@ -604,3 +604,24 @@ select {
         font-size: 1rem;
     }
 }
+
+@media (max-width: 768px) {
+    .weather-container {
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .weather-display {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .weather-container {
+        gap: 0.25rem;
+    }
+}

@@ -417,7 +417,7 @@ const Clock: React.FC<ClockProps> = ({ initialRegion = '関東' }) => {
                                 <div className="text-red-300">{weatherData.error}</div>
                             ) : (
                                 <>
-                                    <div className="weather-icon2">
+                                    <div className="weather-icon2 ">
                                         {getWeatherIcon(weatherData.weather)}
                                     </div>
                                     <div className="weather-info">
