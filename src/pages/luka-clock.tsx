@@ -422,7 +422,7 @@ const Clock: React.FC<ClockProps> = ({ initialRegion = '関東' }) => {
                                         {getWeatherIcon(weatherData.weather)}
                                     </div>
                                             <div className="weather-temp2 text-white text-xl mt-[-10px]">
-                                        {weatherData.temperature}°C
+                                        / {weatherData.temperature} °C
                                     </div>
                                 </>
                             )}

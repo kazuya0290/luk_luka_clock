@@ -432,14 +432,14 @@ select {
 }
 
 .weather-icon2 {
-    top: 59px;
-    margin-left: -300px;
+    top: 61px;
+    margin-left: -270px;
     position: absolute;
 }
 
 .weather-temp2 {
-    margin-top: -115px;
-    margin-left: -200px;
+    margin-top: -110px;
+    margin-left: -220px;
     position: absolute;
 }
 
