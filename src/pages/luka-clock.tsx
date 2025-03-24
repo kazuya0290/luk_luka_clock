@@ -222,7 +222,7 @@ const Clock: React.FC<ClockProps> = ({ initialRegion = '関東' }) => {
         const day = String(date.getDate()).padStart(2, '0');
         const dayOfWeek = days[date.getDay()];
 
-        return `${year}年${month}月${day}日(${dayOfWeek})`;
+        return `${year}/${month}/${day}/(${dayOfWeek})`;
     }, []);
 
     const backgroundStyles: BackgroundStyles = {
