@@ -606,26 +606,21 @@ select {
 }
 
 @media (max-width: 769px) {
-    .weather-display {
-        flex-direction: row;
-        justify-content: center;
-        gap: 1rem;
-    }
-
     .weather-icon2 {
-        margin-right: 0;
-        position: static;
-    }
-
+        top: 50px;
+        margin-left: -200px;
+        position: absolute;
+        }
+    
     .weather-info {
-        margin-top: 0;
-        margin-left: 0;
-        position: static;
-    }
+        margin-top: -95px;
+        left: 220px;
+        position: absolute;
+        }
 }
 
 @media (max-width: 480px) {
-    .weather-display {
-        gap: 0.5rem;
+    .weather-container {
+        gap: 0.25rem;
     }
 }
