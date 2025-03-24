@@ -437,7 +437,7 @@ select {
     position: absolute;
 }
 
-.weather-temp {
+.weather-info {
     margin-top: -95px;
     left: 500px;
     position: absolute;
@@ -612,7 +612,7 @@ select {
         position: absolute;
         }
     
-    .weather-temp {
+    .weather-info {
         margin-top: -95px;
         left: 20px;
         position: absolute;
