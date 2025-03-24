@@ -606,18 +606,17 @@ select {
 }
 
 @media (max-width: 768px) {
-    .weather-container {
-        flex-direction: row;
-        width: 100%;
-        justify-content: center;
-        gap: 0.5rem;
-    }
-
-    .weather-display {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
+    .weather-icon2 {
+        top: 50px;
+        margin-left: -220px;
+        position: absolute;
+        }
+    
+    .weather-info {
+        margin-top: -95px;
+        left: 500px;
+        position: absolute;
+        }
 }
 
 @media (max-width: 480px) {
