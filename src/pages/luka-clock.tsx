@@ -216,7 +216,7 @@ const Clock: React.FC<ClockProps> = ({ initialRegion = '関東' }) => {
     }, [selectedRegion, mounted, fetchWeatherData]);
 
     const formatDate = useCallback((date: Date) => {
-        const days = ['日', '月', '火', '水', '木', '金', '土'];
+        const days = ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'];
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
