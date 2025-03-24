@@ -433,13 +433,13 @@ select {
 
 .weather-icon2 {
     top: 50px;
-    margin-left: -300px;
+    margin-left: -500px;
     position: absolute;
 }
 
 .weather-info {
     margin-top: -95px;
-    left: 410px;
+    left: 210px;
     position: absolute;
 }
 
