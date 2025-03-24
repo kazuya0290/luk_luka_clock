@@ -92,6 +92,7 @@ const getWeatherIcon = (weather: string) => {
     return <Icon path={mdiWeatherPartlyCloudy} size={1.5} color="#FFFFFF" />;
 };
 
+
 interface ClockProps {
     initialRegion?: JapanRegion;
 }
