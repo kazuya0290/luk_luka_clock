@@ -593,7 +593,7 @@ select {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 769px) {
     .date-display {
         font-size: 1.25rem;
     }
@@ -605,7 +605,7 @@ select {
     }
 }
 
-@media (max-width: 940px) {
+@media (max-width: 769px) {
     .weather-icon2 {
         top: 50px;
         margin-left: -200px;
@@ -614,7 +614,7 @@ select {
     
     .weather-info {
         margin-top: -95px;
-        left: 295px;
+        left: 220px;
         position: absolute;
         }
 }
