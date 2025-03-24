@@ -438,8 +438,8 @@ select {
 }
 
 .weather-temp {
-    margin-top: -130px;
-    left: 210px;
+    margin-top: -115px;
+    left: 500px;
     position: absolute;
 }
 
