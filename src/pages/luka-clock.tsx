@@ -410,17 +410,17 @@ const Clock: React.FC<ClockProps> = ({ initialRegion = '関東' }) => {
                         </div>
 
                         
-                        <div className="weather-display text-xl mb-8 text-white flex items-center space-x-4">
+                        <div className="weather-display flex items-center mr-7 bg-black bg-opacity-30 p-2 rounded-lg">
                             {weatherData.isLoading ? (
                                 <div>データ取得中...</div>
                             ) : weatherData.error ? (
                                 <div className="text-red-300">{weatherData.error}</div>
                             ) : (
                                 <>
-                                    <div className="weather-icon2 ">
+                                    <div className="weather-icon2 mr-4 mt-[-10px]">
                                         {getWeatherIcon(weatherData.weather)}
                                     </div>
-                                    <div className="weather-info">
+                                            <div className="weather-temp text-white text-xl mt-[-10px]">
                                         {weatherData.temperature}°C
                                     </div>
                                 </>
