@@ -615,7 +615,7 @@ select {
     .weather-info {
         margin-top: -95px;
         left: 20px;
-        position: absolute;
+        position: static;
         }
 }
 
