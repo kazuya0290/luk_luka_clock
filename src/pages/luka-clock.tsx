@@ -243,7 +243,7 @@ const Clock: React.FC<ClockProps> = ({ initialRegion = '関東' }) => {
         position: 'relative' as const,
         width: '500px',
         height: '500px',
-        marginTop: '-60px',
+        marginTop: '-40px',
         backgroundImage: `url('/${currentImage}.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
