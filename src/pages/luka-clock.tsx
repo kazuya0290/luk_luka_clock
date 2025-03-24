@@ -403,7 +403,7 @@ const Clock: React.FC<ClockProps> = ({ initialRegion = '関東' }) => {
                             {`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}
                         </div>
 
-                        <div className="date-display text-2xl mb-8 text-white font-mono" style={{
+                        <div className="date-display2 text-2xl mb-8 text-white font-mono" style={{
                             textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
                             fontFamily: 'Roboto Mono, monospace'
                         }}>

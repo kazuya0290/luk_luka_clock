@@ -174,10 +174,11 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.date-display {
+.date-display2 {
     color: white;
     font-family: 'Roboto Mono', monospace;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    margin-left: 140px;
 }
 
 .number {
@@ -433,13 +434,13 @@ select {
 
 .weather-icon2 {
     top: 61px;
-    margin-left: -220px;
+    margin-left: -125px;
     position: absolute;
 }
 
 .weather-temp2 {
     margin-top: -110px;
-    margin-left: -170px;
+    margin-left: -80px;
     position: absolute;
 }
 
@@ -594,13 +595,13 @@ select {
 }
 
 @media (max-width: 769px) {
-    .date-display {
+    .date-display2 {
         font-size: 1.25rem;
     }
 }
 
 @media (max-width: 480px) {
-    .date-display {
+    .date-display2 {
         font-size: 1rem;
     }
 }
